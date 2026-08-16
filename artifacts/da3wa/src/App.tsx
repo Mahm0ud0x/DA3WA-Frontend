@@ -238,7 +238,7 @@ function orderOnWhatsApp(
     : "";
   const message = `مرحباً DA3WA، أريد طلب تصميم ${templateName}.${packageText} أريد معرفة التفاصيل والأسعار.`;
   window.open(
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+    `https://wa.me/201044905418?text=${encodeURIComponent(message)}`,
     "_blank",
     "noopener,noreferrer",
   );
@@ -596,7 +596,7 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
 
 function StorySection() {
   return (
-    <section className="relative overflow-hidden bg-[#203c32] px-5 py-28 text-[#f5efe3] md:px-10 md:py-40">
+    <section className="relative overflow-hidden px-5 py-28 text-[#f5efe3] md:px-10 md:py-40 bg-[color:var(--color-black)]">
       <div className="absolute -left-20 top-20 h-72 w-72 rounded-full border border-[#b9965b]/30" />
       <div className="absolute -left-8 top-32 h-56 w-56 rounded-full border border-[#b9965b]/15" />
       <div className="mx-auto grid max-w-[1380px] items-center gap-14 md:grid-cols-[1fr_1.1fr] md:gap-24">
