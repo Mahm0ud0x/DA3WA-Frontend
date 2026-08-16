@@ -1068,7 +1068,7 @@ function Invitation({
             <div className="petal" />
             <div className="petal" />
             <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
-              <div className="reveal-up eyebrow mb-8 text-[#d8bc83]">دعوة زفاف</div>
+              <div className="reveal-up eyebrow mb-8 text-[#d8bc83] text-[30px] font-bold">دعوة زفاف</div>
               <div className="reveal-up delay-1 mx-auto mb-8 h-16 w-px bg-[#b9965b]" />
               <h1 className="reveal-up delay-1 arabic-display text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
                 سارة{" "}
