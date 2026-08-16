@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import quranInvitationCover from "@assets/image_1786905347310.png";
 import {
   ArrowUpLeft,
   Check,
@@ -21,6 +22,20 @@ const GOOGLE_MAPS_URL = "https://maps.google.com/?q=Riyadh+Kingdom+Centre";
 const EVENT_DATE = new Date("2028-07-23T17:00:00");
 
 type Category = "كلاسيك" | "فاخر" | "رومانسي" | "مودرن" | "زهور" | "داكن";
+type InvitationDetails = {
+  firstName: string;
+  secondName: string;
+  dateLine: string;
+  day: string;
+  month: string;
+  year: string;
+  weekday: string;
+  time: string;
+  venueTitle: [string, string];
+  address: [string, string];
+  closing: string;
+  countdownDate: Date;
+};
 type Template = {
   id: string;
   name: string;
@@ -30,9 +45,53 @@ type Template = {
   image: string;
   accent: string;
   description: string;
+  coverStyle?: "standard" | "image";
+  details?: InvitationDetails;
+};
+
+const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
+  firstName: "سارة",
+  secondName: "أحمد",
+  dateLine: "الثلاثاء · 23 يوليو 2028 · 17:00",
+  day: "23",
+  month: "يوليو",
+  year: "2028",
+  weekday: "الأحد",
+  time: "17:00",
+  venueTitle: ["قاعة", "النخبة"],
+  address: ["طريق الملك فهد، حي العليا", "الرياض، المملكة العربية السعودية"],
+  closing: "بكل الحب، سارة وأحمد",
+  countdownDate: EVENT_DATE,
+};
+
+const QURAN_INVITATION_DETAILS: InvitationDetails = {
+  firstName: "إسلام",
+  secondName: "منى",
+  dateLine: "الخميس · 12 ديسمبر 2028 · 16:00",
+  day: "12",
+  month: "ديسمبر",
+  year: "2028",
+  weekday: "الخميس",
+  time: "16:00",
+  venueTitle: ["مسجد", "السداد"],
+  address: ["قاعة المسجد الرئيسية", "المملكة العربية السعودية"],
+  closing: "بكل الحب، إسلام ومنى",
+  countdownDate: new Date("2028-12-12T16:00:00"),
 };
 
 const TEMPLATES: Template[] = [
+  {
+    id: "quran",
+    name: "عقد قران",
+    nameEn: "Quran Ceremony",
+    category: "كلاسيك",
+    tags: ["كلاسيك", "زهور"],
+    image: quranInvitationCover,
+    accent: "#b5aa96",
+    description: "واجهة هادئة من الورود البيضاء لبداية مباركة.",
+    coverStyle: "image",
+    details: QURAN_INVITATION_DETAILS,
+  },
   {
     id: "noor",
     name: "نور",
@@ -62,7 +121,7 @@ const TEMPLATES: Template[] = [
     category: "زهور",
     tags: ["زهور", "رومانسي"],
     image:
-      "https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "https://images.pexels.com/photos/20448444/pexels-photo-20448444.jpeg?auto=compress&cs=tinysrgb&w=1600",
     accent: "#a5665b",
     description: "بتلات رقيقة وحكاية تنمو بهدوء.",
   },
@@ -332,7 +391,7 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
     <section className="relative flex min-h-[720px] items-end overflow-hidden bg-[#203c32] text-[#f6f0e5] md:min-h-[850px]">
       <img
         className="hero-image absolute inset-0 h-full w-full object-cover opacity-65"
-        src="https://images.pexels.com/photos/33449194/pexels-photo-33449194.jpeg"
+        src="https://images.hostinger.com/6f4008c2-fdee-4483-b5f0-0d2176d75273.png"
         alt="تفاصيل زفاف سينمائية"
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,30,24,.6)_0%,rgba(17,38,29,.5)_35%,rgba(20,43,33,.96)_100%)]" />
@@ -807,17 +866,17 @@ function Footer({ onPreview }: { onPreview: () => void }) {
   );
 }
 
-function Countdown() {
+function Countdown({ targetDate = EVENT_DATE }: { targetDate?: Date } = {}) {
   const [remaining, setRemaining] = useState(() =>
-    Math.max(0, EVENT_DATE.getTime() - Date.now()),
+    Math.max(0, targetDate.getTime() - Date.now()),
   );
   useEffect(() => {
     const timer = window.setInterval(
-      () => setRemaining(Math.max(0, EVENT_DATE.getTime() - Date.now())),
+      () => setRemaining(Math.max(0, targetDate.getTime() - Date.now())),
       1000,
     );
     return () => window.clearInterval(timer);
-  }, []);
+  }, [targetDate]);
   const totalSeconds = Math.floor(remaining / 1000);
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
@@ -989,6 +1048,7 @@ function Invitation({
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
   const [parallax, setParallax] = useState(0);
+  const details = template.details ?? DEFAULT_INVITATION_DETAILS;
   useEffect(() => {
     const onScroll = () => setParallax(Math.min(window.scrollY * 0.08, 36));
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -1007,7 +1067,7 @@ function Invitation({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "دعوة زفاف سارة وأحمد",
+          title: `دعوة زفاف ${details.firstName} و${details.secondName}`,
           url: window.location.href,
         });
       } catch {
@@ -1054,43 +1114,58 @@ function Invitation({
           </div>
         </div>
         <div className="preview-scroll h-full overflow-y-auto" dir="rtl">
-          <section className="relative flex min-h-[740px] items-end overflow-hidden px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
-            <img
-              src={template.image}
-              alt={`دعوة ${template.name}`}
-              className="absolute inset-0 h-full w-full object-cover opacity-55"
-              style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,27,20,.62),rgba(17,38,29,.15)_45%,rgba(19,40,31,.97))]" />
-            <div className="petal" />
-            <div className="petal" />
-            <div className="petal" />
-            <div className="petal" />
-            <div className="petal" />
-            <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
-              <div className="reveal-up eyebrow mb-8 text-[#d8bc83] text-[30px] font-bold">دعوة زفاف</div>
-              <div className="reveal-up delay-1 mx-auto mb-8 h-16 w-px bg-[#b9965b]" />
-              <h1 className="reveal-up delay-1 arabic-display text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
-                سارة{" "}
-                <span className="serif text-[38px] text-[#f5efe3]/70 md:text-[55px]">
-                  &amp;
-                </span>{" "}
-                أحمد
-              </h1>
-              <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
-                الثلاثاء · 23 يوليو 2028 · 17:00
-              </p>
-              <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
-                <Countdown />
+          {template.coverStyle === "image" ? (
+            <section className="relative flex min-h-[740px] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
+              <div className="relative z-10 w-full max-w-[576px] shadow-[0_18px_60px_rgba(32,43,36,0.18)]">
+                <img
+                  src={template.image}
+                  alt={`دعوة ${template.name}`}
+                  className="block h-auto w-full object-contain"
+                  loading="eager"
+                />
               </div>
-              <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
-                <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
-                  <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
-                  <Heart size={13} className="text-[#c8a96d]" />
+            </section>
+          ) : (
+            <section className="relative flex min-h-[740px] items-end overflow-hidden px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
+              <img
+                src={template.image}
+                alt={`دعوة ${template.name}`}
+                className="absolute inset-0 h-full w-full object-cover opacity-55"
+                style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,27,20,.62),rgba(17,38,29,.15)_45%,rgba(19,40,31,.97))]" />
+              <div className="petal" />
+              <div className="petal" />
+              <div className="petal" />
+              <div className="petal" />
+              <div className="petal" />
+              <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
+                <div className="reveal-up eyebrow mb-8 text-[30px] font-bold text-[#d8bc83]">
+                  دعوة زفاف
+                </div>
+                <div className="reveal-up delay-1 mx-auto mb-8 h-16 w-px bg-[#b9965b]" />
+                <h1 className="reveal-up delay-1 arabic-display text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
+                  {details.firstName}{" "}
+                  <span className="serif text-[38px] text-[#f5efe3]/70 md:text-[55px]">
+                    &amp;
+                  </span>{" "}
+                  {details.secondName}
+                </h1>
+                <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
+                  {details.dateLine}
+                </p>
+                <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
+                  <Countdown targetDate={details.countdownDate} />
+                </div>
+                <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
+                  <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
+                    <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
+                    <Heart size={13} className="text-[#c8a96d]" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
           <section className="invitation-section bg-[#f2ecdf] px-6 py-24 text-center text-[#203c32] md:px-20 md:py-36">
             <div className="relative z-10 mx-auto max-w-[760px]">
               <div className="eyebrow mb-8 text-[#a17e43]">
