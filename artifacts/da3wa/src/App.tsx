@@ -1067,6 +1067,29 @@ function Invitation({
             <div className="petal" />
             <div className="petal" />
             <div className="petal" />
+            <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
+              <div className="reveal-up eyebrow mb-8 text-[#d8bc83]">دعوة زفاف</div>
+              <div className="reveal-up delay-1 mx-auto mb-8 h-16 w-px bg-[#b9965b]" />
+              <h1 className="reveal-up delay-1 arabic-display text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
+                سارة{" "}
+                <span className="serif text-[38px] text-[#f5efe3]/70 md:text-[55px]">
+                  &amp;
+                </span>{" "}
+                أحمد
+              </h1>
+              <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
+                الثلاثاء · 23 يوليو 2028 · 17:00
+              </p>
+              <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
+                <Countdown />
+              </div>
+              <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
+                <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
+                  <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
+                  <Heart size={13} className="text-[#c8a96d]" />
+                </div>
+              </div>
+            </div>
           </section>
           <section className="invitation-section bg-[#f2ecdf] px-6 py-24 text-center text-[#203c32] md:px-20 md:py-36">
             <div className="relative z-10 mx-auto max-w-[760px]">
