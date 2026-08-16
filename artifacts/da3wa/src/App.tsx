@@ -132,7 +132,6 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
       <div className="relative z-10 mx-auto w-full max-w-[1380px] px-5 pb-16 pt-40 md:px-10 md:pb-24">
         <div className="max-w-[900px]">
           <div className="reveal-up eyebrow mb-7 flex items-center gap-4 text-[#d8bc83]"><span className="h-px w-10 bg-[#b9965b]" /> استوديو دعوات الزفاف الرقمية</div>
-          <h1 data-testid="text-hero-headline" className="reveal-up delay-1 arabic-display max-w-[820px] text-[clamp(43px,7vw,94px)] font-normal leading-[1.1] tracking-[-.03em]">دعوة تجمع بين<br /><span className="text-[#d9ba7b]">أناقة اللحظة</span> ودفء الحكاية</h1>
           <p data-testid="text-hero-subtitle" className="reveal-up delay-2 mt-7 max-w-[470px] text-[14px] leading-8 text-[#f5efe3]/70 md:text-[16px]">دعوات زفاف رقمية صُممت لتُحكى، لا لتُرسل فقط.</p>
           <div className="reveal-up delay-3 mt-10 flex flex-wrap items-center gap-3">
             <button data-testid="button-explore-designs" onClick={() => scrollToSection('designs')} className="luxury-button inline-flex items-center gap-3 border border-[#d7b675] px-6 py-3 text-[11px] text-[#f5efe3]"><span>استكشف التصاميم</span><ChevronLeft size={15} /></button>
