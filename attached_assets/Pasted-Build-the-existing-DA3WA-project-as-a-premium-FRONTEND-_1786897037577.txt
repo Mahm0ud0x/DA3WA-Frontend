@@ -1,0 +1,358 @@
+Build the existing DA3WA (دَعْوَة) project as a premium FRONTEND-ONLY luxury Arabic wedding invitation website.
+
+IMPORTANT:
+Keep it simple. NO backend, database, authentication, dashboard, admin panel, payment system, or customer account system.
+The goal is a beautiful frontend showcase where customers browse invitation designs, open a LIVE invitation preview, and order it through WhatsApp.
+
+The website must look custom-designed and expensive, NOT like a generic AI-generated SaaS template.
+
+================================
+BRAND / VISUAL DIRECTION
+================================
+
+DA3WA is a luxury digital wedding invitation studio.
+
+Style:
+Luxury / Elegant / Romantic / Editorial / Modern Arabic / Cinematic / Minimal / Future-premium.
+
+Use:
+- Ivory
+- Cream
+- Champagne
+- Warm beige
+- Black
+- Deep green
+- Burgundy
+- Subtle gold
+
+Use lots of whitespace, elegant borders, refined spacing, cinematic photography and premium composition.
+
+NO cheap gradients.
+NO excessive rounded cards.
+NO generic dashboard UI.
+NO childish animations.
+NO unnecessary icons.
+NO phone mockups.
+
+Typography is EXTREMELY important.
+
+Use beautiful Arabic typography:
+- Elegant Arabic display/calligraphy font for invitation titles and couple names
+- Premium readable Arabic font for body text
+- Elegant serif font for English/DA3WA branding
+
+The Arabic RTL layout must feel natural and professionally designed.
+
+================================
+HOME PAGE
+================================
+
+Create a clean luxury landing page.
+
+Header:
+دَعْوَة / DA3WA logo
+التصاميم
+الباقات
+كيف تعمل؟
+الأسئلة الشائعة
+[اطلب دعوتك]
+
+Hero:
+Large cinematic wedding background image.
+Dark elegant overlay.
+Premium Arabic headline:
+
+"دعوة تجمع بين أناقة اللحظة ودفء الحكاية"
+
+Subtitle:
+"دعوات زفاف رقمية صُممت لتُحكى، لا لتُرسل فقط."
+
+Buttons:
+"استكشف التصاميم"
+"اطلب دعوتك"
+
+Use subtle entrance animations and slow image movement.
+
+================================
+INVITATION TEMPLATES
+================================
+
+This is the MOST IMPORTANT section.
+
+Create 8-10 beautiful invitation templates.
+
+Examples:
+Classic
+Royal
+Garden
+Romantic
+Black & Gold
+Modern
+Floral
+Cinematic
+Botanical
+Traditional Arabic
+
+Each template must have a large beautiful preview and:
+- Template name
+- Style/category
+- "شاهد الدعوة"
+- "اطلب هذه الدعوة"
+
+Add simple filters:
+الكل | كلاسيك | فاخر | رومانسي | مودرن | زهور | داكن
+
+DO NOT make templates look like static cards.
+
+================================
+LIVE INVITATION PREVIEW
+================================
+
+When the user clicks "شاهد الدعوة", open a FULL interactive invitation page.
+
+The invitation itself must look similar in quality and composition to the provided reference images.
+
+It must feel like a REAL wedding invitation, not a website template.
+
+Create sections:
+
+1. HERO
+Full-screen wedding background.
+Arabic luxury logo/title:
+"دعوة زفاف"
+
+Date:
+"23 يوليو 2028 — 17:00"
+
+Couple names:
+"Sara & Ahmed"
+
+Use an elegant script font.
+
+Add subtle animated particles / light / flowers / slow background movement.
+
+2. INTRODUCTION
+
+Use exactly this Arabic text:
+
+"وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ"
+
+Then:
+
+"نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه المناسبة المباركة."
+
+Make this section elegant and spacious.
+
+3. COUNTDOWN
+
+Create a REAL WORKING countdown using JavaScript.
+
+Show:
+الأيام
+الساعات
+الدقائق
+الثواني
+
+Countdown target:
+23 July 2028 at 17:00
+
+It MUST actually count down every second.
+Do NOT use static numbers.
+
+4. DATE
+
+Beautiful calendar/date section showing:
+23
+يوليو
+2028
+الأحد
+17:00
+
+5. EVENT TIMELINE
+
+Example:
+
+16:00
+استقبال الضيوف
+
+17:00
+مراسم الزفاف
+
+19:00
+العشاء
+
+Animate the timeline as the user scrolls.
+
+6. LOCATION
+
+Show venue name, address and a beautiful location section.
+
+Button:
+"فتح الموقع"
+
+It should open Google Maps using a configurable URL.
+
+7. RSVP
+
+Create an elegant "تأكيد الحضور" section.
+
+Fields:
+الاسم
+عدد المرافقين
+سأحضر / لن أتمكن من الحضور
+
+Button:
+"تأكيد الحضور"
+
+After clicking, show a beautiful success animation:
+"شكرًا لتأكيد حضوركم 🤍"
+
+This is only a frontend demo. Do not pretend data is saved to a backend.
+
+8. MUSIC
+
+Add a small elegant music toggle.
+NO autoplay.
+
+9. SHARE
+
+Add:
+"مشاركة الدعوة"
+"نسخ الرابط"
+
+Show feedback:
+"تم نسخ الرابط ✓"
+
+================================
+ANIMATIONS
+================================
+
+The invitations MUST feel ALIVE.
+
+Use high-quality subtle animations:
+- Fade/reveal on scroll
+- Text reveal
+- Slow cinematic image zoom
+- Floating flowers/petals
+- Soft light movement
+- Parallax
+- Elegant timeline animation
+- Countdown transitions
+- RSVP success animation
+
+Animations should be slow, smooth and luxurious.
+
+NO bouncing.
+NO spinning.
+NO excessive animation.
+NO cheesy effects.
+
+================================
+WHATSAPP ORDER
+================================
+
+This is the actual conversion flow.
+
+Every:
+"اطلب دعوتك"
+and
+"اطلب هذه الدعوة"
+
+must open my WhatsApp.
+
+Create ONE easy-to-edit WhatsApp number variable near the top of the code.
+
+Use a pre-filled message containing the selected template name.
+
+Example:
+
+"مرحباً DA3WA، أريد طلب تصميم [Template Name]. أريد معرفة التفاصيل والأسعار."
+
+The user can edit the message before sending.
+
+================================
+PRICING
+================================
+
+Add a simple elegant pricing section with 3 packages:
+
+Basic
+Premium
+Luxury
+
+Use placeholder prices that are easy to change in one place.
+
+Do NOT add payment functionality.
+
+All pricing buttons → WhatsApp.
+
+================================
+HOW IT WORKS
+================================
+
+Show:
+
+01 اختر التصميم
+02 تواصل معنا على واتساب
+03 أرسل بيانات المناسبة
+04 نقوم بتجهيز الدعوة
+05 تستلم رابط دعوتك
+
+Make it clear that DA3WA handles customization.
+
+================================
+MOBILE
+================================
+
+The invitation must be excellent on mobile.
+
+Use responsive RTL design.
+Typography, spacing, images and animations must remain beautiful on phones.
+
+Add a mobile sticky "اطلب دعوتك" button if it improves UX.
+
+================================
+CODE
+================================
+
+Keep the implementation simple and clean.
+
+Use reusable components for:
+TemplateCard
+Invitation
+Countdown
+Timeline
+RSVP
+Pricing
+WhatsAppButton
+
+Keep invitation/template data in one easy-to-edit location.
+
+I will replace the background images later, so make image URLs easy to find and change.
+
+Do NOT over-engineer.
+
+================================
+FINAL PRIORITY
+================================
+
+Do NOT focus on complex functionality.
+
+Focus on:
+
+1. BEAUTIFUL ARABIC FONTS
+2. LUXURY VISUAL DESIGN
+3. LIVE INVITATION TEMPLATES
+4. REAL WORKING COUNTDOWN
+5. SMOOTH ANIMATIONS
+6. RSVP / LOCATION / DATE
+7. EASY WHATSAPP ORDERING
+8. PERFECT MOBILE EXPERIENCE
+
+The final result should feel like a real premium wedding invitation brand.
+
+The invitation templates are the STAR of the website.
+
+Make the visitor see the invitation and immediately think:
+
+"أنا عايز دعوتي تبقى كده."

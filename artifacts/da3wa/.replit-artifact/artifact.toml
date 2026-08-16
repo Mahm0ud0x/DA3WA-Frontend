@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "DA3WA — Luxury Wedding Invitations"
+description = "A premium Arabic-first wedding invitation studio showcase where visitors explore cinematic invitation designs, open live interactive previews, and order their chosen design through WhatsApp."
+version = "1.0.0"
+id = "artifacts/da3wa"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24550
+
+[services.development]
+run = "pnpm --filter @workspace/da3wa run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/da3wa", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/da3wa/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24550"
+BASE_PATH = "/"
