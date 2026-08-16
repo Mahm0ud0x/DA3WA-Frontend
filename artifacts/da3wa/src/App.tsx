@@ -817,7 +817,7 @@ function FAQ() {
 
 function Footer({ onPreview }: { onPreview: () => void }) {
   return (
-    <footer className="bg-[#172d24] px-5 py-12 text-[#f5efe3] md:px-10">
+    <footer className="px-5 py-12 text-[#f5efe3] md:px-10 bg-[color:var(--color-black)]">
       <div className="mx-auto flex max-w-[1380px] flex-col justify-between gap-10 md:flex-row md:items-end">
         <div>
           <Brand light />
