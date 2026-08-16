@@ -81,18 +81,6 @@ const QURAN_INVITATION_DETAILS: InvitationDetails = {
 
 const TEMPLATES: Template[] = [
   {
-    id: "quran",
-    name: "عقد قران",
-    nameEn: "Quran Ceremony",
-    category: "كلاسيك",
-    tags: ["كلاسيك", "زهور"],
-    image: quranInvitationCover,
-    accent: "#b5aa96",
-    description: "واجهة هادئة من الورود البيضاء لبداية مباركة.",
-    coverStyle: "image",
-    details: QURAN_INVITATION_DETAILS,
-  },
-  {
     id: "noor",
     name: "نور",
     nameEn: "Noor",
