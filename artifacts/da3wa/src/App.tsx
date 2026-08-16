@@ -128,7 +128,6 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
     <section className="relative flex min-h-[720px] items-end overflow-hidden bg-[#203c32] text-[#f6f0e5] md:min-h-[850px]">
       <img className="hero-image absolute inset-0 h-full w-full object-cover opacity-65" src="https://images.pexels.com/photos/2253879/pexels-photo-2253879.jpeg?auto=compress&cs=tinysrgb&w=2200" alt="تفاصيل زفاف سينمائية" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,30,24,.6)_0%,rgba(17,38,29,.5)_35%,rgba(20,43,33,.96)_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_25%,rgba(185,150,91,.22),transparent_45%)]" />
       <div className="relative z-10 mx-auto w-full max-w-[1380px] px-5 pb-16 pt-40 md:px-10 md:pb-24">
         <div className="max-w-[900px]">
           <div className="reveal-up eyebrow mb-7 flex items-center gap-4 text-[#d8bc83]"><span className="h-px w-10 bg-[#b9965b]" /> استوديو دعوات الزفاف الرقمية</div>
