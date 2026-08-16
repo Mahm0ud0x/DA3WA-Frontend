@@ -399,7 +399,8 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
             data-testid="text-hero-subtitle"
             className="reveal-up delay-2 mt-7 max-w-[470px] text-[14px] leading-8 text-[#f5efe3]/70 md:text-[16px]"
           >
-            دعوات زفاف رقمية صُممت لتُحكى، لا لتُرسل فقط.
+            دعوات زفاف رقمية بتصميم أنيق، تحمل تفاصيل يومكم وتوصلها لضيوفكم
+            بطريقة مميزة.
           </p>
           <div className="reveal-up delay-3 mt-10 flex flex-wrap items-center gap-3">
             <button
@@ -560,8 +561,8 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
         <SectionIntro
           number="01"
           label="الأرشيف"
-          title="تصاميم تُفتح، لا تُعرض."
-          body="اختاري الإيقاع الذي يشبهكما. كل تصميم هنا بداية لحكاية تُفصّل بأسمائكما وتفاصيل يومكما."
+          title="تصاميم تناسب فرحتكم"
+          body="مجموعة من تصاميم دعوات الزفاف، اختاروا منها الشكل الأقرب لذوقكم، وإحنا نضيف أسماءكم وتفاصيل يومكم."
         />
         <div className="mb-10 flex flex-wrap gap-2 border-b border-[#cfc6b6] pb-5">
           {filters.map((item) => (
@@ -679,8 +680,8 @@ function Pricing() {
         <SectionIntro
           number="03"
           label="الباقات"
-          title="مساحة تناسب قصتكما."
-          body="كل باقة بداية لحوار. تواصلوا معنا لنصنع التفاصيل التي تشبهكما تماماً."
+          title="اختاروا الباقة المناسبة لكم"
+          body="كل اللي تحتاجوه عشان تعملوا دعوة زفاف أنيقة وسهلة المشاركة مع ضيوفكم."
         />
         <div className="grid border-t border-[#c9beac] md:grid-cols-3">
           {PRICES.map((item, index) => (
