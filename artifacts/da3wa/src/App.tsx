@@ -130,7 +130,7 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,30,24,.6)_0%,rgba(17,38,29,.5)_35%,rgba(20,43,33,.96)_100%)]" />
       <div className="relative z-10 mx-auto w-full max-w-[1380px] px-5 pb-16 pt-40 md:px-10 md:pb-24">
         <div className="max-w-[900px]">
-          <p data-testid="text-hero-slogan" className="reveal-up delay-1 arabic-display mb-8 text-[clamp(28px,4.5vw,56px)] leading-[1.2] text-[#d9ba7b]">دعوتكم تبدأ من هنا</p>
+          <p data-testid="text-hero-slogan" className="reveal-up delay-1 arabic-display mb-8 text-[#d9ba7b] text-[65px] font-semibold">دعوتكم تبدأ من هنا</p>
           <div className="reveal-up eyebrow mb-7 flex items-center gap-4 text-[#d8bc83]"><span className="h-px w-10 bg-[#b9965b]" /> استوديو دعوات الزفاف الرقمية</div>
           <p data-testid="text-hero-subtitle" className="reveal-up delay-2 mt-7 max-w-[470px] text-[14px] leading-8 text-[#f5efe3]/70 md:text-[16px]">دعوات زفاف رقمية صُممت لتُحكى، لا لتُرسل فقط.</p>
           <div className="reveal-up delay-3 mt-10 flex flex-wrap items-center gap-3">
