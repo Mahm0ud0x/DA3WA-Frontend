@@ -88,8 +88,7 @@ const TEMPLATES: Template[] = [
     nameEn: "Noor",
     category: "كلاسيك",
     tags: ["كلاسيك", "رومانسي"],
-    image:
-      "https://images.pexels.com/photos/13293704/pexels-photo-13293704.jpeg",
+    image: "/pic1.jpeg",
     backgroundVideo: "/vid1.mp4",
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
@@ -100,8 +99,8 @@ const TEMPLATES: Template[] = [
     nameEn: "Layl",
     category: "داكن",
     tags: ["داكن", "فاخر"],
-    image:
-      "https://images.pexels.com/photos/16528514/pexels-photo-16528514.jpeg",
+    image: "/pic2.jpg",
+    backgroundVideo: "/vid2.mp4",
     accent: "#c5a261",
     description: "دعوة مسائية بلون الليل ولمعة الذهب.",
   },
