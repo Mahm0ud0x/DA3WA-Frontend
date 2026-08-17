@@ -4,27 +4,27 @@
 
 :root {
   --background: 39 46% 94%;
-  --foreground: 155 22% 13%;
-  --card: 42 42% 96%;
-  --card-foreground: 155 22% 13%;
-  --popover: 42 42% 96%;
-  --popover-foreground: 155 22% 13%;
-  --primary: 157 29% 20%;
+  --foreground: 30 8% 10%;
+  --card: 39 38% 96%;
+  --card-foreground: 30 8% 10%;
+  --popover: 39 38% 96%;
+  --popover-foreground: 30 8% 10%;
+  --primary: 30 8% 9%;
   --primary-foreground: 39 46% 94%;
   --secondary: 37 33% 87%;
-  --secondary-foreground: 155 22% 13%;
+  --secondary-foreground: 30 8% 10%;
   --muted: 38 24% 88%;
-  --muted-foreground: 154 11% 39%;
+  --muted-foreground: 30 10% 39%;
   --accent: 40 38% 57%;
-  --accent-foreground: 155 22% 13%;
+  --accent-foreground: 30 8% 10%;
   --destructive: 0 46% 42%;
   --destructive-foreground: 39 46% 94%;
   --border: 38 24% 79%;
   --input: 38 24% 79%;
   --ring: 40 38% 57%;
-  --sidebar: 157 29% 20%;
+  --sidebar: 30 8% 9%;
   --sidebar-foreground: 39 46% 94%;
-  --sidebar-border: 157 18% 31%;
+  --sidebar-border: 30 7% 23%;
   --app-font-sans: 'Noto Kufi Arabic', sans-serif;
   --app-font-serif: 'Amiri', serif;
   --app-font-mono: 'DM Mono', monospace;
@@ -36,8 +36,8 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-width: 320px;
-  background: #efe9dd;
-  color: #1b2c24;
+  background: #f4efe6;
+  color: #171412;
   font-family: var(--app-font-sans);
   text-rendering: optimizeLegibility;
 }
@@ -88,16 +88,16 @@ button { cursor: pointer; }
 .luxury-button > * { position: relative; z-index: 1; }
 
 .template-card { transition: transform .55s cubic-bezier(.2,.8,.2,1), box-shadow .55s; }
-.template-card:hover { transform: translateY(-7px); box-shadow: 0 22px 45px rgba(45,40,28,.14); }
+.template-card:hover { transform: translateY(-7px); box-shadow: 0 26px 60px rgba(15,13,11,.2); }
 .template-card img { transition: transform 1.2s cubic-bezier(.2,.8,.2,1), filter 1s; }
 .template-card:hover img { transform: scale(1.06); filter: saturate(1.08); }
 .template-card .card-overlay { opacity: 0; transition: opacity .5s; }
 .template-card:hover .card-overlay, .template-card:focus-within .card-overlay { opacity: 1; }
 .filter-chip { transition: background-color .25s, color .25s, border-color .25s; }
-.filter-chip.active { background:#203c32; color:#f4eddf; border-color:#203c32; }
+.filter-chip.active { background:#151210; color:#f4eddf; border-color:#151210; }
 
 .preview-shell { animation: fadeIn .45s ease both; }
-.preview-scroll { scrollbar-width: thin; scrollbar-color: #b9965b #203c32; }
+.preview-scroll { scrollbar-width: thin; scrollbar-color: #b9965b #151210; }
 .invitation-section { position: relative; }
 .invitation-section::before { content:''; position:absolute; top:0; left:50%; width:1px; height:100%; background:linear-gradient(to bottom, transparent, rgba(185,150,91,.24), transparent); pointer-events:none; }
 .countdown-cell { transition: background-color .4s, transform .4s; }
@@ -106,7 +106,7 @@ button { cursor: pointer; }
 .timeline-item.visible { opacity: 1; transform:translateY(0); }
 .timeline-item:nth-child(2) { transition-delay: .12s; }
 .timeline-item:nth-child(3) { transition-delay: .24s; }
-.preview-dialog { box-shadow: 0 30px 100px rgba(4,14,10,.45); }
+.preview-dialog { box-shadow: 0 30px 100px rgba(0,0,0,.55); }
 .modal-backdrop { animation: fadeIn .35s ease both; }
 .faq-answer { display: grid; grid-template-rows: 0fr; transition:grid-template-rows .4s ease; }
 .faq-answer > div { overflow:hidden; }
@@ -121,4 +121,22 @@ button { cursor: pointer; }
   .eyebrow { letter-spacing: .12em; }
   .hero-image { animation-duration: 28s; }
   .invitation-section::before { display:none; }
+}
+
+/* Black, champagne and ivory are the only surfaces in the atelier palette. */
+.da3wa-app [class*="bg-[#203c32"],
+.da3wa-app [class*="bg-[#172d24"],
+.da3wa-app [class*="bg-[#142b22"],
+.da3wa-app [class*="bg-[#12251d"],
+.da3wa-app [class*="bg-[#1d3027"] {
+  background-color: #151210 !important;
+}
+
+.da3wa-app [class*="text-[#203c32"],
+.da3wa-app [class*="text-[#1d3027"] {
+  color: #151210 !important;
+}
+
+.da3wa-app [class*="border-[#203c32"] {
+  border-color: rgba(21, 18, 16, .35) !important;
 }

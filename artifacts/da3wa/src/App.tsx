@@ -9,6 +9,7 @@ import {
   Heart,
   MapPin,
   Menu,
+  MessageCircle,
   Pause,
   Play,
   Share2,
@@ -121,7 +122,7 @@ const TEMPLATES: Template[] = [
     tags: ["مودرن", "كلاسيك"],
     image:
       "https://images.pexels.com/photos/28845692/pexels-photo-28845692.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    accent: "#72826a",
+    accent: "#8b7652",
     description: "لغة معاصرة لمساحة عربية رحبة.",
   },
   {
@@ -143,7 +144,7 @@ const TEMPLATES: Template[] = [
     tags: ["زهور", "مودرن"],
     image:
       "https://images.pexels.com/photos/1702373/pexels-photo-1702373.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    accent: "#5e795e",
+    accent: "#806c4b",
     description: "حديقة خفية تُفتح عند كل تمرير.",
   },
   {
@@ -253,7 +254,7 @@ function scrollToSection(id: string) {
 function Brand({ light = false }: { light?: boolean }) {
   return (
     <div
-      className={`flex items-center gap-3 ${light ? "text-[#f5efe3]" : "text-[#203c32]"}`}
+      className={`flex items-center gap-3 ${light ? "text-[#f5efe3]" : "text-[#151210]"}`}
       dir="ltr"
       data-testid="brand-da3wa"
     >
@@ -287,7 +288,7 @@ function WhatsAppButton({
     <button
       data-testid="button-order-whatsapp"
       onClick={() => orderOnWhatsApp(templateName)}
-      className={`luxury-button inline-flex items-center justify-center gap-3 border border-[#b9965b] bg-[#b9965b] px-6 py-3 text-[11px] font-semibold text-[#1d3027] ${className}`}
+      className={`luxury-button inline-flex items-center justify-center gap-3 border border-[#b9965b] bg-[#b9965b] px-6 py-3 text-[11px] font-semibold text-[#151210] ${className}`}
     >
       <span>{children}</span>
       <ArrowUpLeft size={15} strokeWidth={1.5} />
@@ -320,14 +321,14 @@ function Header({ onPreview }: { onPreview: () => void }) {
           <button
             data-testid="button-header-preview"
             onClick={onPreview}
-            className="hidden border border-[#d7b675]/60 px-4 py-2 text-[10px] text-[#f5efe3] transition hover:bg-[#f5efe3] hover:text-[#203c32] sm:block"
+            className="hidden border border-[#d7b675]/60 px-4 py-2 text-[10px] text-[#f5efe3] transition hover:bg-[#f5efe3] hover:text-[#151210] sm:block"
           >
             شاهد دعوة حية
           </button>
           <button
             data-testid="button-header-order"
             onClick={() => orderOnWhatsApp()}
-            className="border border-[#d7b675] px-4 py-2 text-[10px] text-[#f5efe3] transition hover:bg-[#d7b675] hover:text-[#203c32]"
+            className="border border-[#d7b675] px-4 py-2 text-[10px] text-[#f5efe3] transition hover:bg-[#d7b675] hover:text-[#151210]"
           >
             اطلب دعوتك
           </button>
@@ -342,7 +343,7 @@ function Header({ onPreview }: { onPreview: () => void }) {
         </div>
       </div>
       {menuOpen && (
-        <div className="border-t border-white/15 bg-[#203c32]/95 px-5 py-5 md:hidden">
+        <div className="border-t border-white/15 bg-[#151210]/95 px-5 py-5 md:hidden">
           <div className="flex flex-col gap-4">
             {navItems.map((item) => (
               <button
@@ -376,13 +377,13 @@ function Header({ onPreview }: { onPreview: () => void }) {
 
 function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
   return (
-    <section className="relative flex min-h-[720px] items-end overflow-hidden bg-[#203c32] text-[#f6f0e5] md:min-h-[850px]">
+    <section className="relative flex min-h-[720px] items-end overflow-hidden bg-[#151210] text-[#f6f0e5] md:min-h-[850px]">
       <img
         className="hero-image absolute inset-0 h-full w-full object-cover opacity-65"
         src="https://images.hostinger.com/6f4008c2-fdee-4483-b5f0-0d2176d75273.png"
         alt="تفاصيل زفاف سينمائية"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,30,24,.6)_0%,rgba(17,38,29,.5)_35%,rgba(20,43,33,.96)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,7,6,.62)_0%,rgba(12,10,8,.52)_35%,rgba(13,11,9,.97)_100%)]" />
       <div className="relative z-10 mx-auto w-full max-w-[1380px] px-5 pb-16 pt-40 md:px-10 md:pb-24">
         <div className="max-w-[900px]">
           <p
@@ -458,12 +459,12 @@ function SectionIntro({
           <span className="h-px w-9 bg-[#b9965b]" />
           <span className="eyebrow">{label}</span>
         </div>
-        <h2 className="arabic-display max-w-[620px] text-[42px] font-normal leading-[1.2] text-[#203c32] md:text-[64px]">
+        <h2 className="arabic-display max-w-[620px] text-[42px] font-normal leading-[1.2] text-[#151210] md:text-[64px]">
           {title}
         </h2>
       </div>
       {body && (
-        <p className="max-w-[300px] text-[12px] leading-8 text-[#53635a]">
+        <p className="max-w-[300px] text-[12px] leading-8 text-[#6d6257]">
           {body}
         </p>
       )}
@@ -480,58 +481,53 @@ function TemplateCard({
   index: number;
   onPreview: (template: Template) => void;
 }) {
-  const large = index === 0 || index === 5;
   return (
     <article
       data-testid={`card-template-${template.id}`}
-      className={`template-card group relative overflow-hidden bg-[#d9d0c0] ${large ? "md:col-span-2" : ""}`}
+      className="template-card group relative overflow-hidden rounded-[28px] bg-[#181614] shadow-[0_22px_55px_rgba(15,13,11,.14)]"
     >
-      <div
-        className={`relative overflow-hidden ${large ? "aspect-[1.3/1] md:aspect-[1.75/1]" : "aspect-[.92/1]"}`}
-      >
+      <div className="relative aspect-[.68/1] min-h-[430px] overflow-hidden">
         <img
           src={template.image}
           alt={`تصميم دعوة ${template.name}`}
           className="h-full w-full object-cover"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#142b22]/90 via-[#142b22]/10 to-transparent opacity-80" />
-        <div className="card-overlay absolute inset-0 flex items-center justify-center bg-[#203c32]/20">
-          <button
-            data-testid={`button-preview-${template.id}`}
-            onClick={() => onPreview(template)}
-            className="luxury-button border border-[#f5efe3]/80 bg-[#203c32]/80 px-5 py-3 text-[10px] text-[#f5efe3]"
-          >
-            شاهد الدعوة
-          </button>
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,12,10,.12)_0%,rgba(14,12,10,.08)_40%,rgba(14,12,10,.92)_100%)]" />
+        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
+          <span className="rounded-full bg-[#c9a64a] px-3 py-1.5 text-[9px] font-bold text-[#17130d] shadow-lg">
+            Premium VIP
+          </span>
+          <span className="mono text-[9px] text-[#f8f1e4]/65">
+            {String(index + 1).padStart(2, "0")}
+          </span>
         </div>
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-[#f6f0e5] md:p-7">
-          <div>
-            <div className="arabic-display text-3xl">{template.name}</div>
-            <div className="serif mt-1 text-[11px] tracking-[.13em] text-[#d8bc83]">
-              {template.nameEn}
-            </div>
+        <div className="absolute inset-x-0 bottom-0 p-5 text-[#f8f1e4] md:p-6">
+          <div className="arabic-display text-[30px] leading-tight">{template.name}</div>
+          <div className="mt-1 text-[10px] text-[#e5c989]/80">
+            {template.category} · {template.nameEn}
           </div>
-          <div className="max-w-[160px] text-left text-[10px] leading-6 text-[#f6f0e5]/70">
+          <p className="mt-2 line-clamp-2 text-[10px] leading-6 text-[#f8f1e4]/65">
             {template.description}
+          </p>
+          <div className="mt-4 flex items-center gap-3">
+            <button
+              data-testid={`button-preview-${template.id}`}
+              onClick={() => onPreview(template)}
+              className="luxury-button flex-1 rounded-full bg-[#f8f4ec] px-4 py-3 text-[10px] font-bold text-[#17130d] transition hover:bg-[#e6d5ad]"
+            >
+              شاهد الدعوة
+            </button>
+            <button
+              data-testid={`button-order-template-${template.id}`}
+              onClick={() => orderOnWhatsApp(template.name)}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#c9a64a] text-[#17130d] transition hover:scale-105 hover:bg-[#e3c778]"
+              aria-label={`اطلب تصميم ${template.name} عبر واتساب`}
+            >
+              <MessageCircle size={18} strokeWidth={2.2} />
+            </button>
           </div>
         </div>
-      </div>
-      <div className="flex items-center justify-between border-x border-b border-[#c5bba8] bg-[#f5f0e7] px-4 py-3">
-        <span className="text-[10px] text-[#69736a]">
-          {template.category} · {String(index + 1).padStart(2, "0")}
-        </span>
-        <button
-          data-testid={`button-order-template-${template.id}`}
-          onClick={() => orderOnWhatsApp(template.name)}
-          className="group/order flex items-center gap-2 text-[10px] text-[#203c32] transition hover:text-[#a17e43]"
-        >
-          <span>اطلب هذه الدعوة</span>
-          <ArrowUpLeft
-            size={13}
-            className="transition-transform group-hover/order:-translate-y-0.5"
-          />
-        </button>
       </div>
     </article>
   );
@@ -570,12 +566,12 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
               data-testid={`button-filter-${item}`}
               key={item}
               onClick={() => setFilter(item)}
-              className={`filter-chip border px-4 py-2 text-[10px] ${filter === item ? "active" : "border-[#c8bead] text-[#53635a] hover:border-[#203c32]"}`}
+              className={`filter-chip border px-4 py-2 text-[10px] ${filter === item ? "active" : "border-[#c8bead] text-[#665e55] hover:border-[#151210]"}`}
             >
               {item}
             </button>
           ))}
-          <span className="mr-auto self-center text-[10px] text-[#8a887b]">
+          <span className="mr-auto self-center text-[10px] text-[#8a7d6d]">
             {visible.length} تصاميم
           </span>
         </div>
@@ -658,10 +654,10 @@ function Process() {
               className={`group border-b border-[#c9beac] py-7 md:border-b-0 md:border-l md:px-5 md:py-8 ${index === 0 ? "md:border-r" : ""}`}
             >
               <span className="mono text-[11px] text-[#a17e43]">{number}</span>
-              <h3 className="arabic-display mt-8 text-[24px] text-[#203c32]">
+              <h3 className="arabic-display mt-8 text-[24px] text-[#151210]">
                 {title}
               </h3>
-              <p className="mt-4 text-[11px] leading-7 text-[#687268]">
+              <p className="mt-4 text-[11px] leading-7 text-[#74685d]">
                 {text}
               </p>
               <div className="mt-8 h-px w-0 bg-[#b9965b] transition-all duration-700 group-hover:w-full" />
@@ -687,10 +683,10 @@ function Pricing() {
           {PRICES.map((item, index) => (
             <div
               key={item.id}
-              className={`relative border-b border-[#c9beac] px-1 py-8 md:border-b-0 md:px-8 md:py-10 ${index > 0 ? "md:border-r" : ""} ${item.id === "premium" ? "bg-[#203c32] text-[#f5efe3]" : ""}`}
+              className={`relative border-b border-[#c9beac] px-1 py-8 md:border-b-0 md:px-8 md:py-10 ${index > 0 ? "md:border-r" : ""} ${item.id === "premium" ? "bg-[#151210] text-[#f5efe3]" : ""}`}
             >
               {item.id === "premium" && (
-                <div className="absolute right-8 top-0 -translate-y-1/2 bg-[#b9965b] px-3 py-1 text-[9px] text-[#203c32]">
+                <div className="absolute right-8 top-0 -translate-y-1/2 bg-[#b9965b] px-3 py-1 text-[9px] text-[#151210]">
                   الأكثر اختياراً
                 </div>
               )}
@@ -701,7 +697,7 @@ function Pricing() {
               </div>
               <h3 className="arabic-display mt-5 text-[32px]">{item.name}</h3>
               <p
-                className={`mt-2 text-[10px] ${item.id === "premium" ? "text-[#f5efe3]/55" : "text-[#7b8177]"}`}
+                className={`mt-2 text-[10px] ${item.id === "premium" ? "text-[#f5efe3]/55" : "text-[#82776a]"}`}
               >
                 {item.note}
               </p>
@@ -727,7 +723,7 @@ function Pricing() {
                       className={
                         item.id === "premium"
                           ? "text-[#f5efe3]/75"
-                          : "text-[#5c685e]"
+                          : "text-[#75695b]"
                       }
                     >
                       {feature}
@@ -738,7 +734,7 @@ function Pricing() {
               <button
                 data-testid={`button-price-${item.id}`}
                 onClick={() => orderOnWhatsApp("أحد تصاميم DA3WA", item.name)}
-                className={`luxury-button mt-10 w-full border px-5 py-3 text-[10px] ${item.id === "premium" ? "border-[#b9965b] text-[#f5efe3]" : "border-[#203c32] text-[#203c32]"}`}
+                className={`luxury-button mt-10 w-full border px-5 py-3 text-[10px] ${item.id === "premium" ? "border-[#b9965b] text-[#f5efe3]" : "border-[#151210] text-[#151210]"}`}
               >
                 تحدثوا معنا
               </button>
@@ -793,7 +789,7 @@ function FAQ() {
                 onClick={() => setOpen(open === index ? null : index)}
                 className="flex w-full items-center justify-between gap-5 py-6 text-right"
               >
-                <span className="arabic-display text-[21px] text-[#203c32]">
+                <span className="arabic-display text-[21px] text-[#151210]">
                   {question}
                 </span>
                 <span className="faq-plus text-2xl font-light text-[#a17e43]">
@@ -802,7 +798,7 @@ function FAQ() {
               </button>
               <div className="faq-answer">
                 <div>
-                  <p className="max-w-[650px] pb-6 text-[12px] leading-8 text-[#687268]">
+                  <p className="max-w-[650px] pb-6 text-[12px] leading-8 text-[#74685d]">
                     {answer}
                   </p>
                 </div>
@@ -930,7 +926,7 @@ function Timeline() {
             <div className="mono text-[14px] text-[#c8a96d]">{time}</div>
             <div className="mt-2 text-[12px] text-[#f5efe3]/65">{title}</div>
           </div>
-          <div className="z-10 h-2.5 w-2.5 shrink-0 rotate-45 border border-[#d8bc83] bg-[#203c32]" />
+          <div className="z-10 h-2.5 w-2.5 shrink-0 rotate-45 border border-[#d8bc83] bg-[#151210]" />
           <div className="w-1/2" />
         </div>
       ))}
@@ -988,7 +984,7 @@ function RSVP() {
             </span>
             <select
               data-testid="select-rsvp-guests"
-              className="w-full border-b border-[#b9965b]/35 bg-transparent px-1 py-3 text-sm text-[#f5efe3] outline-none [&>option]:text-[#203c32]"
+              className="w-full border-b border-[#b9965b]/35 bg-transparent px-1 py-3 text-sm text-[#f5efe3] outline-none [&>option]:text-[#151210]"
             >
               <option value="0">بدون مرافقين</option>
               <option value="1">مرافق واحد</option>
@@ -1067,9 +1063,9 @@ function Invitation({
     window.setTimeout(() => setShared(false), 2200);
   };
   return (
-    <div className="modal-backdrop fixed inset-0 z-50 bg-[#12251d]/90 p-0 backdrop-blur-sm md:p-5">
-      <div className="preview-dialog preview-shell relative h-full w-full overflow-hidden bg-[#203c32] md:mx-auto md:max-w-[1160px]">
-        <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-[#f5efe3]/15 bg-[#172d24]/60 px-4 py-4 backdrop-blur-md md:px-7">
+    <div className="modal-backdrop fixed inset-0 z-50 bg-[#090807]/90 p-0 backdrop-blur-sm md:p-5">
+      <div className="preview-dialog preview-shell relative h-full w-full overflow-hidden bg-[#151210] md:mx-auto md:max-w-[1160px]">
+        <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-[#f5efe3]/15 bg-[#1c1916]/80 px-4 py-4 backdrop-blur-md md:px-7">
           <div className="flex items-center gap-4">
             <button
               data-testid="button-close-invitation"
@@ -1105,7 +1101,7 @@ function Invitation({
         <div className="preview-scroll h-full overflow-y-auto" dir="rtl">
           {template.coverStyle === "image" ? (
             <section className="relative flex min-h-[740px] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
-              <div className="relative z-10 w-full max-w-[576px] shadow-[0_18px_60px_rgba(32,43,36,0.18)]">
+              <div className="relative z-10 w-full max-w-[576px] shadow-[0_18px_60px_rgba(10,8,7,0.22)]">
                 <img
                   src={template.image}
                   alt={`دعوة ${template.name}`}
@@ -1122,7 +1118,7 @@ function Invitation({
                 className="absolute inset-0 h-full w-full object-cover opacity-55"
                 style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
               />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,27,20,.62),rgba(17,38,29,.15)_45%,rgba(19,40,31,.97))]" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,7,6,.68),rgba(18,15,12,.18)_45%,rgba(12,10,8,.98))]" />
               <div className="petal" />
               <div className="petal" />
               <div className="petal" />
@@ -1155,7 +1151,7 @@ function Invitation({
               </div>
             </section>
           )}
-          <section className="invitation-section bg-[#f2ecdf] px-6 py-24 text-center text-[#203c32] md:px-20 md:py-36">
+          <section className="invitation-section bg-[#f2ecdf] px-6 py-24 text-center text-[#151210] md:px-20 md:py-36">
             <div className="relative z-10 mx-auto max-w-[760px]">
               <div className="eyebrow mb-8 text-[#a17e43]">
                 بسم الله الرحمن الرحيم
@@ -1167,13 +1163,13 @@ function Invitation({
                 ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
               </p>
               <div className="mx-auto mt-12 h-px w-12 bg-[#b9965b]" />
-              <p className="mt-10 text-[13px] leading-8 text-[#687268]">
+              <p className="mt-10 text-[13px] leading-8 text-[#74685d]">
                 نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه المناسبة
                 المباركة.
               </p>
             </div>
           </section>
-          <section className="bg-[#203c32] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
+          <section className="bg-[#151210] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
             <div className="mx-auto max-w-[760px] text-center">
               <div className="eyebrow mb-6 text-[#d8bc83]">
                 الوقت يمضي نحو فرحتنا
@@ -1181,23 +1177,25 @@ function Invitation({
               <h2 className="arabic-display mb-12 text-[38px] font-normal md:text-[55px]">
                 ننتظركم
               </h2>
-              <Countdown />
+              <Countdown targetDate={details.countdownDate} />
             </div>
           </section>
-          <section className="bg-[#e5ddcf] px-6 py-24 text-[#203c32] md:px-20 md:py-36">
+          <section className="bg-[#e5ddcf] px-6 py-24 text-[#151210] md:px-20 md:py-36">
             <div className="mx-auto grid max-w-[780px] items-center gap-12 md:grid-cols-[.8fr_1.2fr]">
               <div className="border border-[#b9965b] p-3">
                 <div className="flex aspect-[.85/1] flex-col items-center justify-center border border-[#b9965b]/40 text-center">
                   <span className="eyebrow text-[#a17e43]">موعدنا</span>
-                  <span className="serif mt-5 text-[88px] leading-none text-[#203c32]">
-                    23
+                    <span className="serif mt-5 text-[88px] leading-none text-[#151210]">
+                    {details.day}
                   </span>
-                  <span className="arabic-display mt-2 text-2xl">يوليو</span>
+                  <span className="arabic-display mt-2 text-2xl">{details.month}</span>
                   <span className="mono mt-2 text-[13px] text-[#a17e43]">
-                    2028
+                    {details.year}
                   </span>
                   <div className="my-4 h-px w-8 bg-[#b9965b]" />
-                  <span className="text-[11px]">الأحد · 17:00</span>
+                  <span className="text-[11px]">
+                    {details.weekday} · {details.time}
+                  </span>
                 </div>
               </div>
               <div>
@@ -1209,14 +1207,14 @@ function Invitation({
                   <br />
                   الموعد.
                 </h2>
-                <p className="mt-6 text-[12px] leading-8 text-[#687268]">
+                <p className="mt-6 text-[12px] leading-8 text-[#74685d]">
                   سنكون بانتظاركم في أمسية تليق بهذه البداية. حضوركم هو أجمل ما
                   نتمناه.
                 </p>
               </div>
             </div>
           </section>
-          <section className="bg-[#172d24] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
+          <section className="bg-[#1c1916] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
             <div className="mx-auto max-w-[760px]">
               <div className="mb-14 text-center">
                 <div className="eyebrow mb-5 text-[#d8bc83]">
@@ -1229,7 +1227,7 @@ function Invitation({
               <Timeline />
             </div>
           </section>
-          <section className="bg-[#f2ecdf] px-6 py-24 text-[#203c32] md:px-20 md:py-36">
+          <section className="bg-[#f2ecdf] px-6 py-24 text-[#151210] md:px-20 md:py-36">
             <div className="mx-auto grid max-w-[850px] items-center gap-12 md:grid-cols-[1.1fr_.9fr]">
               <div className="relative aspect-[1.1/1] overflow-hidden">
                 <img
@@ -1242,21 +1240,21 @@ function Invitation({
               <div>
                 <div className="eyebrow mb-5 text-[#a17e43]">المكان</div>
                 <h2 className="arabic-display text-[43px] leading-tight">
-                  قاعة
+                  {details.venueTitle[0]}
                   <br />
-                  النخبة
+                  {details.venueTitle[1]}
                 </h2>
-                <p className="mt-5 text-[12px] leading-8 text-[#687268]">
-                  طريق الملك فهد، حي العليا
+                <p className="mt-5 text-[12px] leading-8 text-[#74685d]">
+                  {details.address[0]}
                   <br />
-                  الرياض، المملكة العربية السعودية
+                  {details.address[1]}
                 </p>
                 <a
                   data-testid="link-open-location"
                   href={GOOGLE_MAPS_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#203c32] px-5 py-3 text-[10px] text-[#203c32]"
+                  className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#151210] px-5 py-3 text-[10px] text-[#151210]"
                 >
                   <span>فتح الموقع</span>
                   <MapPin size={14} />
@@ -1264,7 +1262,7 @@ function Invitation({
               </div>
             </div>
           </section>
-          <section className="bg-[#203c32] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
+          <section className="bg-[#151210] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
             <div className="mx-auto max-w-[650px] text-center">
               <div className="eyebrow mb-5 text-[#d8bc83]">ننتظركم بمحبة</div>
               <h2 className="arabic-display mb-12 text-[43px] font-normal md:text-[58px]">
@@ -1273,27 +1271,27 @@ function Invitation({
               <RSVP />
             </div>
           </section>
-          <section className="bg-[#e5ddcf] px-6 py-20 text-center text-[#203c32] md:px-20">
+          <section className="bg-[#e5ddcf] px-6 py-20 text-center text-[#151210] md:px-20">
             <div className="mx-auto max-w-[620px]">
               <div className="flex items-center justify-center gap-3">
                 <button
                   data-testid="button-toggle-music"
                   onClick={() => setMusic(!music)}
-                  className="flex items-center gap-3 border border-[#203c32]/30 px-5 py-3 text-[10px] transition hover:border-[#b9965b]"
+                  className="flex items-center gap-3 border border-[#151210]/30 px-5 py-3 text-[10px] transition hover:border-[#b9965b]"
                 >
                   {music ? <Volume2 size={15} /> : <VolumeX size={15} />}
                   <span>{music ? "الموسيقى مفعلة" : "شغّل موسيقى الدعوة"}</span>
                   {music ? <Pause size={13} /> : <Play size={13} />}
                 </button>
               </div>
-              <p className="mt-5 text-[10px] text-[#687268]">
+              <p className="mt-5 text-[10px] text-[#74685d]">
                 اضغط لتشغيل الموسيقى — لا يبدأ التشغيل تلقائياً.
               </p>
               <div className="mx-auto mt-10 flex justify-center gap-4">
                 <button
                   data-testid="button-share-bottom"
                   onClick={share}
-                  className="flex items-center gap-2 text-[10px] text-[#53635a] transition hover:text-[#a17e43]"
+                  className="flex items-center gap-2 text-[10px] text-[#6d6257] transition hover:text-[#a17e43]"
                 >
                   <Share2 size={14} />{" "}
                   {shared ? "تمت المشاركة" : "مشاركة الدعوة"}
@@ -1302,19 +1300,19 @@ function Invitation({
                 <button
                   data-testid="button-copy-bottom"
                   onClick={copyLink}
-                  className="flex items-center gap-2 text-[10px] text-[#53635a] transition hover:text-[#a17e43]"
+                  className="flex items-center gap-2 text-[10px] text-[#6d6257] transition hover:text-[#a17e43]"
                 >
                   <Copy size={14} /> {copied ? "تم نسخ الرابط ✓" : "نسخ الرابط"}
                 </button>
               </div>
             </div>
           </section>
-          <footer className="bg-[#172d24] px-6 py-14 text-center text-[#f5efe3]">
+          <footer className="bg-[#1c1916] px-6 py-14 text-center text-[#f5efe3]">
             <div className="serif text-[18px] tracking-[.2em] text-[#d8bc83]">
               DA3WA
             </div>
             <p className="mt-3 text-[10px] text-[#f5efe3]/40">
-              بكل الحب، سارة وأحمد
+              {details.closing}
             </p>
             <button
               data-testid="button-invitation-order"
@@ -1356,7 +1354,7 @@ function App() {
         <button
           data-testid="button-mobile-order"
           onClick={() => orderOnWhatsApp()}
-          className="luxury-button flex items-center gap-2 bg-[#b9965b] px-4 py-3 text-[10px] text-[#203c32] shadow-lg"
+          className="luxury-button flex items-center gap-2 bg-[#b9965b] px-4 py-3 text-[10px] text-[#151210] shadow-lg"
         >
           <span>اطلب دعوتك</span>
           <ArrowUpLeft size={14} />
@@ -1366,7 +1364,7 @@ function App() {
         <button
           data-testid="button-scroll-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-5 right-5 z-20 hidden border border-[#203c32]/30 bg-[#efe9dd]/90 p-3 text-[#203c32] backdrop-blur-sm transition hover:bg-[#b9965b] md:block"
+          className="fixed bottom-5 right-5 z-20 hidden border border-[#151210]/30 bg-[#f4efe6]/90 p-3 text-[#151210] backdrop-blur-sm transition hover:bg-[#b9965b] md:block"
           aria-label="العودة إلى الأعلى"
         >
           <ChevronDown size={15} className="rotate-180" />
