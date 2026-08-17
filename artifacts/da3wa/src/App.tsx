@@ -1058,7 +1058,7 @@ function Invitation({
 
     console.log("auto-scroll effect mounted, container height:", container.scrollHeight, "client height:", container.clientHeight);
     const startTimer = window.setTimeout(() => {
-      const speed = 0.4;
+      const speed = 1.2;
       const step = () => {
         if (stopped) return;
         container.scrollTop += speed;
