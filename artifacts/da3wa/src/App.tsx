@@ -44,6 +44,7 @@ type Template = {
   category: Category;
   tags: Category[];
   image: string;
+  backgroundVideo?: string;
   accent: string;
   description: string;
   coverStyle?: "standard" | "image";
@@ -89,6 +90,7 @@ const TEMPLATES: Template[] = [
     tags: ["كلاسيك", "رومانسي"],
     image:
       "https://images.pexels.com/photos/13293704/pexels-photo-13293704.jpeg",
+    backgroundVideo: "/vid1.mp4",
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
   },
@@ -1110,12 +1112,26 @@ function Invitation({
             </section>
           ) : (
             <section className="relative flex min-h-[740px] items-end overflow-hidden px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
-              <img
-                src={template.image}
-                alt={`دعوة ${template.name}`}
-                className="absolute inset-0 h-full w-full object-cover opacity-55"
-                style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
-              />
+              {template.backgroundVideo ? (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster={template.image}
+                  className="absolute inset-0 h-full w-full object-cover opacity-55"
+                  style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
+                >
+                  <source src={template.backgroundVideo} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={template.image}
+                  alt={`دعوة ${template.name}`}
+                  className="absolute inset-0 h-full w-full object-cover opacity-55"
+                  style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
+                />
+              )}
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,7,6,.68),rgba(18,15,12,.18)_45%,rgba(12,10,8,.98))]" />
               <div className="petal" />
               <div className="petal" />
