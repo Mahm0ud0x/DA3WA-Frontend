@@ -88,8 +88,8 @@ const TEMPLATES: Template[] = [
     nameEn: "Noor",
     category: "كلاسيك",
     tags: ["كلاسيك", "رومانسي"],
-    image: "/pic1.jpeg",
-    backgroundVideo: "/vid1.mp4",
+    image: "/pic2.jpg",
+    backgroundVideo: "/vid2.mp4",
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
   },
@@ -99,8 +99,8 @@ const TEMPLATES: Template[] = [
     nameEn: "Layl",
     category: "داكن",
     tags: ["داكن", "فاخر"],
-    image: "/pic2.jpg",
-    backgroundVideo: "/vid2.mp4",
+    image: "/pic1.jpeg",
+    backgroundVideo: "/vid1.mp4",
     accent: "#c5a261",
     description: "دعوة مسائية بلون الليل ولمعة الذهب.",
   },
@@ -110,8 +110,7 @@ const TEMPLATES: Template[] = [
     nameEn: "Ward",
     category: "زهور",
     tags: ["زهور", "رومانسي"],
-    image:
-      "https://images.pexels.com/photos/20448444/pexels-photo-20448444.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    image: "/pic3.png",
     accent: "#a5665b",
     description: "بتلات رقيقة وحكاية تنمو بهدوء.",
   },
@@ -121,8 +120,8 @@ const TEMPLATES: Template[] = [
     nameEn: "Saha",
     category: "مودرن",
     tags: ["مودرن", "كلاسيك"],
-    image:
-      "https://images.pexels.com/photos/28845692/pexels-photo-28845692.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    image: "/pic4.jpg",
+    backgroundVideo: "/vid3.mp4",
     accent: "#8b7652",
     description: "لغة معاصرة لمساحة عربية رحبة.",
   },
@@ -1056,13 +1055,21 @@ function Invitation({
     container.addEventListener("touchstart", stopAutoScroll, { passive: true });
     container.addEventListener("mousedown", stopAutoScroll, { passive: true });
 
-    console.log("auto-scroll effect mounted, container height:", container.scrollHeight, "client height:", container.clientHeight);
+    console.log(
+      "auto-scroll effect mounted, container height:",
+      container.scrollHeight,
+      "client height:",
+      container.clientHeight,
+    );
     const startTimer = window.setTimeout(() => {
       const speed = 0.8;
       const step = () => {
         if (stopped) return;
         container.scrollTop += speed;
-        if (container.scrollTop + container.clientHeight < container.scrollHeight) {
+        if (
+          container.scrollTop + container.clientHeight <
+          container.scrollHeight
+        ) {
           rafId = requestAnimationFrame(step);
         }
       };
@@ -1136,7 +1143,11 @@ function Invitation({
             </button>
           </div>
         </div>
-        <div ref={scrollRef} className="preview-scroll h-full overflow-y-auto" dir="rtl">
+        <div
+          ref={scrollRef}
+          className="preview-scroll h-full overflow-y-auto"
+          dir="rtl"
+        >
           {template.coverStyle === "image" ? (
             <section className="relative flex min-h-[740px] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
               <div className="relative z-10 w-full max-w-[576px] shadow-[0_18px_60px_rgba(10,8,7,0.22)]">
