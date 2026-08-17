@@ -495,9 +495,6 @@ function TemplateCard({
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,12,10,.12)_0%,rgba(14,12,10,.08)_40%,rgba(14,12,10,.92)_100%)]" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-          <span className="rounded-full bg-[#c9a64a] px-3 py-1.5 text-[9px] font-bold text-[#17130d] shadow-lg">
-            Premium VIP
-          </span>
           <span className="mono text-[9px] text-[#f8f1e4]/65">
             {String(index + 1).padStart(2, "0")}
           </span>
