@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Aref+Ruqaa:wght@400;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -27,6 +27,7 @@
   --sidebar-border: 30 7% 23%;
   --app-font-sans: 'Noto Kufi Arabic', sans-serif;
   --app-font-serif: 'Amiri', serif;
+  --app-font-display: 'Aref Ruqaa', serif;
   --app-font-mono: 'DM Mono', monospace;
   --radius: 0.25rem;
 }
@@ -49,6 +50,7 @@ button { cursor: pointer; }
 .da3wa-app { overflow: hidden; }
 .serif { font-family: 'Playfair Display', 'Amiri', serif; }
 .arabic-display { font-family: 'Amiri', serif; }
+.couple-names { font-family: var(--app-font-display); }
 .mono { font-family: 'DM Mono', monospace; }
 .eyebrow { font-size: 10px; letter-spacing: .19em; text-transform: uppercase; }
 

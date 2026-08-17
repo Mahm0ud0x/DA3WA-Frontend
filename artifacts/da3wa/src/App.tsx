@@ -1142,7 +1142,7 @@ function Invitation({
                   دعوة زفاف
                 </div>
                 <div className="reveal-up delay-1 mx-auto mb-8 h-16 w-px bg-[#b9965b]" />
-                <h1 className="reveal-up delay-1 arabic-display text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
+                <h1 className="reveal-up delay-1 couple-names text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
                   {details.firstName}{" "}
                   <span className="serif text-[38px] text-[#f5efe3]/70 md:text-[55px]">
                     &amp;
