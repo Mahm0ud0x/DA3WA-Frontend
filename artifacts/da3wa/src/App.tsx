@@ -1032,11 +1032,50 @@ function Invitation({
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
   const [parallax, setParallax] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const details = template.details ?? DEFAULT_INVITATION_DETAILS;
   useEffect(() => {
     const onScroll = () => setParallax(Math.min(window.scrollY * 0.08, 36));
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    let stopped = false;
+    let rafId: number;
+
+    const stopAutoScroll = () => {
+      stopped = true;
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+
+    container.addEventListener("wheel", stopAutoScroll, { passive: true });
+    container.addEventListener("touchstart", stopAutoScroll, { passive: true });
+    container.addEventListener("mousedown", stopAutoScroll, { passive: true });
+
+    console.log("auto-scroll effect mounted, container height:", container.scrollHeight, "client height:", container.clientHeight);
+    const startTimer = window.setTimeout(() => {
+      const speed = 0.4;
+      const step = () => {
+        if (stopped) return;
+        container.scrollTop += speed;
+        if (container.scrollTop + container.clientHeight < container.scrollHeight) {
+          rafId = requestAnimationFrame(step);
+        }
+      };
+      rafId = requestAnimationFrame(step);
+    }, 3000);
+
+    return () => {
+      window.clearTimeout(startTimer);
+      stopAutoScroll();
+      container.removeEventListener("wheel", stopAutoScroll);
+      container.removeEventListener("touchstart", stopAutoScroll);
+      container.removeEventListener("mousedown", stopAutoScroll);
+    };
   }, []);
   const copyLink = async () => {
     try {
@@ -1097,7 +1136,7 @@ function Invitation({
             </button>
           </div>
         </div>
-        <div className="preview-scroll h-full overflow-y-auto" dir="rtl">
+        <div ref={scrollRef} className="preview-scroll h-full overflow-y-auto" dir="rtl">
           {template.coverStyle === "image" ? (
             <section className="relative flex min-h-[740px] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
               <div className="relative z-10 w-full max-w-[576px] shadow-[0_18px_60px_rgba(10,8,7,0.22)]">
