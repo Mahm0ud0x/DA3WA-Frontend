@@ -423,7 +423,6 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
           </div>
         </div>
         <div className="mt-20 flex items-end justify-between border-t border-white/20 pt-5 text-[10px] text-[#f5efe3]/55">
-          <span>الرياض · المملكة العربية السعودية</span>
           <button
             data-testid="button-hero-preview"
             onClick={() => onPreview(TEMPLATES[0])}
@@ -500,7 +499,9 @@ function TemplateCard({
           </span>
         </div>
         <div className="absolute inset-x-0 bottom-0 p-5 text-[#f8f1e4] md:p-6">
-          <div className="arabic-display text-[30px] leading-tight">{template.name}</div>
+          <div className="arabic-display text-[30px] leading-tight">
+            {template.name}
+          </div>
           <div className="mt-1 text-[10px] text-[#e5c989]/80">
             {template.category} · {template.nameEn}
           </div>
@@ -1182,10 +1183,12 @@ function Invitation({
               <div className="border border-[#b9965b] p-3">
                 <div className="flex aspect-[.85/1] flex-col items-center justify-center border border-[#b9965b]/40 text-center">
                   <span className="eyebrow text-[#a17e43]">موعدنا</span>
-                    <span className="serif mt-5 text-[88px] leading-none text-[#151210]">
+                  <span className="serif mt-5 text-[88px] leading-none text-[#151210]">
                     {details.day}
                   </span>
-                  <span className="arabic-display mt-2 text-2xl">{details.month}</span>
+                  <span className="arabic-display mt-2 text-2xl">
+                    {details.month}
+                  </span>
                   <span className="mono mt-2 text-[13px] text-[#a17e43]">
                     {details.year}
                   </span>
