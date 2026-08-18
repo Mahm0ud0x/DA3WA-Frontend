@@ -37,7 +37,7 @@ type InvitationDetails = {
   closing: string;
   countdownDate: Date;
 };
-type Template = {
+export type Template = {
   id: string;
   name: string;
   nameEn: string;
@@ -1358,11 +1358,23 @@ function Invitation({
     </div>
   );
 }
+import { CLIENTS } from "./clients";
+  function App() {
+    const clientSlug = window.location.pathname.replace(/^\/+/, "");
+    const clientTemplate = CLIENTS[clientSlug];
 
-function App() {
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
-    null,
-  );
+    if (clientTemplate) {
+      return (
+        <Invitation
+          template={clientTemplate}
+          onClose={() => (window.location.href = "/")}
+        />
+      );
+    }
+
+    const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+      null,
+    );
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600);
