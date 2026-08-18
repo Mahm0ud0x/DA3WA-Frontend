@@ -33,7 +33,7 @@ export const CLIENTS: Record<string, Template> = {
     nameEn: "Omar & Hisham",
     category: "كلاسيك",
     tags: ["كلاسيك"],
-    image: "/a1.jpeg",
+    image: "/a2.png",
     accent: "#c5a261",
     description: "",
     details: {
