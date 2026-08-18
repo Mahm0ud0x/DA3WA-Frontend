@@ -502,9 +502,6 @@ function TemplateCard({
           <div className="arabic-display text-[30px] leading-tight">
             {template.name}
           </div>
-          <div className="mt-1 text-[10px] text-[#e5c989]/80">
-            {template.category} · {template.nameEn}
-          </div>
           <p className="mt-2 line-clamp-2 text-[10px] leading-6 text-[#f8f1e4]/65">
             {template.description}
           </p>
@@ -532,23 +529,7 @@ function TemplateCard({
 }
 
 function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
-  const [filter, setFilter] = useState<"الكل" | Category>("الكل");
-  const filters: ("الكل" | Category)[] = [
-    "الكل",
-    "كلاسيك",
-    "فاخر",
-    "رومانسي",
-    "مودرن",
-    "زهور",
-    "داكن",
-  ];
-  const visible = useMemo(
-    () =>
-      filter === "الكل"
-        ? TEMPLATES
-        : TEMPLATES.filter((item) => item.tags.includes(filter)),
-    [filter],
-  );
+  const visible = TEMPLATES;
   return (
     <section id="designs" className="bg-[#efe9dd] px-5 py-24 md:px-10 md:py-36">
       <div className="mx-auto max-w-[1380px]">
@@ -558,21 +539,6 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
           title="تصاميم تناسب فرحتكم"
           body="مجموعة من تصاميم دعوات الزفاف، اختاروا منها الشكل الأقرب لذوقكم، وإحنا نضيف أسماءكم وتفاصيل يومكم."
         />
-        <div className="mb-10 flex flex-wrap gap-2 border-b border-[#cfc6b6] pb-5">
-          {filters.map((item) => (
-            <button
-              data-testid={`button-filter-${item}`}
-              key={item}
-              onClick={() => setFilter(item)}
-              className={`filter-chip border px-4 py-2 text-[10px] ${filter === item ? "active" : "border-[#c8bead] text-[#665e55] hover:border-[#151210]"}`}
-            >
-              {item}
-            </button>
-          ))}
-          <span className="mr-auto self-center text-[10px] text-[#8a7d6d]">
-            {visible.length} تصاميم
-          </span>
-        </div>
         <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-4">
           {visible.map((template, index) => (
             <TemplateCard
