@@ -49,6 +49,7 @@ export type Template = {
   description: string;
   coverStyle?: "standard" | "image";
   details?: InvitationDetails;
+  tier: "standard" | "premium"; // ⬅️ جديد
 };
 
 const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
@@ -92,6 +93,7 @@ const TEMPLATES: Template[] = [
     backgroundVideo: "/vid2.mp4",
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
+    tier: "premium",
   },
   {
     id: "layl",
@@ -103,6 +105,7 @@ const TEMPLATES: Template[] = [
     backgroundVideo: "/vid1.mp4",
     accent: "#c5a261",
     description: "دعوة مسائية بلون الليل ولمعة الذهب.",
+    tier: "premium",
   },
   {
     id: "ward",
@@ -113,6 +116,7 @@ const TEMPLATES: Template[] = [
     image: "/pic3.png",
     accent: "#a5665b",
     description: "بتلات رقيقة وحكاية تنمو بهدوء.",
+    tier: "premium",
   },
   {
     id: "saha",
@@ -124,6 +128,7 @@ const TEMPLATES: Template[] = [
     backgroundVideo: "/vid3.mp4",
     accent: "#8b7652",
     description: "لغة معاصرة لمساحة عربية رحبة.",
+    tier: "premium",
   },
   {
     id: "malika",
@@ -131,10 +136,11 @@ const TEMPLATES: Template[] = [
     nameEn: "Malika",
     category: "فاخر",
     tags: ["فاخر", "كلاسيك"],
-    image:
-      "https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    image: "/pic5.jpg",
+    backgroundVideo: "/vid4.mp4",
     accent: "#b48a42",
     description: "تفاصيل ملكية لا تحتاج إلى شرح.",
+    tier: "premium",
   },
   {
     id: "bustan",
@@ -142,10 +148,10 @@ const TEMPLATES: Template[] = [
     nameEn: "Bustan",
     category: "زهور",
     tags: ["زهور", "مودرن"],
-    image:
-      "https://images.pexels.com/photos/1702373/pexels-photo-1702373.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    image: "pic6.jpg",
     accent: "#806c4b",
     description: "حديقة خفية تُفتح عند كل تمرير.",
+    tier: "standard",
   },
   {
     id: "sahar",
@@ -157,6 +163,7 @@ const TEMPLATES: Template[] = [
       "https://images.pexels.com/photos/265856/pexels-photo-265856.jpeg?auto=compress&cs=tinysrgb&w=1600",
     accent: "#bd8a79",
     description: "رومانسية دافئة بين الضوء والظل.",
+    tier: "standard",
   },
   {
     id: "athar",
@@ -168,6 +175,7 @@ const TEMPLATES: Template[] = [
       "https://images.pexels.com/photos/169193/pexels-photo-169193.jpeg?auto=compress&cs=tinysrgb&w=1600",
     accent: "#a88c58",
     description: "تصميم عميق، صامت، ويُتذكّر.",
+    tier: "standard",
   },
   {
     id: "rawnaq",
@@ -179,6 +187,7 @@ const TEMPLATES: Template[] = [
       "https://images.pexels.com/photos/169211/pexels-photo-169211.jpeg?auto=compress&cs=tinysrgb&w=1600",
     accent: "#b68077",
     description: "بساطة لها حضور، وتفاصيل لها معنى.",
+    tier: "standard",
   },
 ];
 
@@ -528,8 +537,45 @@ function TemplateCard({
   );
 }
 
+function TemplateGrid({
+  templates,
+  onPreview,
+}: {
+  templates: Template[];
+  onPreview: (template: Template) => void;
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-4">
+      {templates.map((template, index) => (
+        <TemplateCard
+          key={template.id}
+          template={template}
+          index={index}
+          onPreview={onPreview}
+        />
+      ))}
+    </div>
+  );
+}
+function TierHeading({ title }: { title: string }) {
+  return (
+    <div className="mb-14 text-center">
+      <h3 className="serif text-[42px] italic text-[#1c1916] md:text-[56px]">
+        {title}
+      </h3>
+      <div className="mt-6 flex items-center justify-center gap-3">
+        <span className="h-px w-16 bg-[#b9965b]/50" />
+        <span className="h-2 w-2 rotate-45 border border-[#b9965b]" />
+        <span className="h-px w-16 bg-[#b9965b]/50" />
+      </div>
+    </div>
+  );
+}
+
 function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
-  const visible = TEMPLATES;
+  const standardTemplates = TEMPLATES.filter((t) => t.tier === "standard");
+  const premiumTemplates = TEMPLATES.filter((t) => t.tier === "premium");
+
   return (
     <section id="designs" className="bg-[#efe9dd] px-5 py-24 md:px-10 md:py-36">
       <div className="mx-auto max-w-[1380px]">
@@ -539,16 +585,25 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
           title="تصاميم تناسب فرحتكم"
           body="مجموعة من تصاميم دعوات الزفاف، اختاروا منها الشكل الأقرب لذوقكم، وإحنا نضيف أسماءكم وتفاصيل يومكم."
         />
-        <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-4">
-          {visible.map((template, index) => (
-            <TemplateCard
-              key={template.id}
-              template={template}
-              index={index}
-              onPreview={onPreview}
-            />
-          ))}
+
+        {/* Standard Section */}
+        <TierHeading title="Standard Collection" />
+        <TemplateGrid templates={standardTemplates} onPreview={onPreview} />
+
+        <div className="mt-24">
+          <TierHeading title="Premium Collection" />
         </div>
+        <TemplateGrid templates={premiumTemplates} onPreview={onPreview} />
+
+        {/* Premium Section */}
+        <div className="mb-6 mt-20 flex items-center gap-3 text-[#a17e43]">
+          <span className="h-px w-9 bg-[#b9965b]" />
+          <span className="eyebrow">الدعوات المميزة</span>
+        </div>
+        <h3 className="arabic-display mb-10 text-[30px] text-[#151210] md:text-[40px]">
+          Premium Invitation
+        </h3>
+        <TemplateGrid templates={premiumTemplates} onPreview={onPreview} />
       </div>
     </section>
   );
@@ -1359,22 +1414,22 @@ function Invitation({
   );
 }
 import { CLIENTS } from "./clients";
-  function App() {
-    const clientSlug = window.location.pathname.replace(/^\/+/, "");
-    const clientTemplate = CLIENTS[clientSlug];
+function App() {
+  const clientSlug = window.location.pathname.replace(/^\/+/, "");
+  const clientTemplate = CLIENTS[clientSlug];
 
-    if (clientTemplate) {
-      return (
-        <Invitation
-          template={clientTemplate}
-          onClose={() => (window.location.href = "/")}
-        />
-      );
-    }
-
-    const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
-      null,
+  if (clientTemplate) {
+    return (
+      <Invitation
+        template={clientTemplate}
+        onClose={() => (window.location.href = "/")}
+      />
     );
+  }
+
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    null,
+  );
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600);
