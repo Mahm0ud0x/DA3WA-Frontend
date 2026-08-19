@@ -594,16 +594,6 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
           <TierHeading title="Premium Collection" />
         </div>
         <TemplateGrid templates={premiumTemplates} onPreview={onPreview} />
-
-        {/* Premium Section */}
-        <div className="mb-6 mt-20 flex items-center gap-3 text-[#a17e43]">
-          <span className="h-px w-9 bg-[#b9965b]" />
-          <span className="eyebrow">الدعوات المميزة</span>
-        </div>
-        <h3 className="arabic-display mb-10 text-[30px] text-[#151210] md:text-[40px]">
-          Premium Invitation
-        </h3>
-        <TemplateGrid templates={premiumTemplates} onPreview={onPreview} />
       </div>
     </section>
   );
