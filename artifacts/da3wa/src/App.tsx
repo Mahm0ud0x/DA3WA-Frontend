@@ -92,7 +92,7 @@ const TEMPLATES: Template[] = [
     category: "كلاسيك",
     tags: ["كلاسيك", "رومانسي"],
     image: "/pic2.jpg",
-    backgroundVideo: "/vid2.mp4",
+    backgroundVideo: "/vid1.mp4",
     envelopeVideo: "/intro2.mp4", // ⬅️ فيديو الظرف المفتوح"
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
@@ -105,10 +105,11 @@ const TEMPLATES: Template[] = [
     category: "داكن",
     tags: ["داكن", "فاخر"],
     image: "/pic1.jpeg",
-    backgroundVideo: "/vid1.mp4",
+    backgroundVideo: "/vid2.mp4",
     accent: "#c5a261",
     description: "دعوة مسائية بلون الليل ولمعة الذهب.",
     tier: "premium",
+    envelopeVideo: "/intro2.mp4",
   },
   {
     id: "ward",
@@ -117,9 +118,11 @@ const TEMPLATES: Template[] = [
     category: "زهور",
     tags: ["زهور", "رومانسي"],
     image: "/pic3.png",
+    backgroundVideo: "/vid3.mp4",
     accent: "#a5665b",
     description: "بتلات رقيقة وحكاية تنمو بهدوء.",
     tier: "premium",
+    envelopeVideo: "/intro2.mp4",
   },
   {
     id: "saha",
@@ -128,10 +131,11 @@ const TEMPLATES: Template[] = [
     category: "مودرن",
     tags: ["مودرن", "كلاسيك"],
     image: "/pic4.jpg",
-    backgroundVideo: "/vid3.mp4",
+    backgroundVideo: "/vid5.mp4",
     accent: "#8b7652",
     description: "لغة معاصرة لمساحة عربية رحبة.",
     tier: "premium",
+    envelopeVideo: "/intro2.mp4",
   },
   {
     id: "malika",
@@ -144,6 +148,7 @@ const TEMPLATES: Template[] = [
     accent: "#b48a42",
     description: "تفاصيل ملكية لا تحتاج إلى شرح.",
     tier: "premium",
+    envelopeVideo: "/intro2.mp4",
   },
   {
     id: "bustan",
@@ -498,12 +503,25 @@ function TemplateCard({
       className="template-card group relative overflow-hidden rounded-[28px] bg-[#181614] shadow-[0_22px_55px_rgba(15,13,11,.14)]"
     >
       <div className="relative aspect-[.68/1] min-h-[430px] overflow-hidden">
-        <img
-          src={template.image}
-          alt={`تصميم دعوة ${template.name}`}
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
+        {template.backgroundVideo ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={template.image}
+            className="h-full w-full object-cover"
+          >
+            <source src={template.backgroundVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src={template.image}
+            alt={`تصميم دعوة ${template.name}`}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        )}
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,12,10,.12)_0%,rgba(14,12,10,.08)_40%,rgba(14,12,10,.92)_100%)]" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
           <span className="mono text-[9px] text-[#f8f1e4]/65">
@@ -589,14 +607,14 @@ function Designs({ onPreview }: { onPreview: (template: Template) => void }) {
           body="مجموعة من تصاميم دعوات الزفاف، اختاروا منها الشكل الأقرب لذوقكم، وإحنا نضيف أسماءكم وتفاصيل يومكم."
         />
 
-        {/* Standard Section */}
-        <TierHeading title="Standard Collection" />
-        <TemplateGrid templates={standardTemplates} onPreview={onPreview} />
+        {/* Premium Section */}
+        <TierHeading title="Premium Collection" />
+        <TemplateGrid templates={premiumTemplates} onPreview={onPreview} />
 
         <div className="mt-24">
-          <TierHeading title="Premium Collection" />
+          <TierHeading title="Standard Collection" />
         </div>
-        <TemplateGrid templates={premiumTemplates} onPreview={onPreview} />
+        <TemplateGrid templates={standardTemplates} onPreview={onPreview} />
       </div>
     </section>
   );
@@ -1109,10 +1127,10 @@ function Invitation({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-    useEffect(() => {
-      if (!envelopeOpened) return; // ⬅️ جديد: منستناش نشتغل قبل فتح الظرف
-      const container = scrollRef.current;
-      if (!container) return;
+  useEffect(() => {
+    if (!envelopeOpened) return; // ⬅️ جديد: منستناش نشتغل قبل فتح الظرف
+    const container = scrollRef.current;
+    if (!container) return;
 
     let stopped = false;
     let rafId: number;
@@ -1154,7 +1172,7 @@ function Invitation({
       container.removeEventListener("touchstart", stopAutoScroll);
       container.removeEventListener("mousedown", stopAutoScroll);
     };
-    }, [envelopeOpened]);
+  }, [envelopeOpened]);
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -1189,7 +1207,7 @@ function Invitation({
           />
         )}
         <LightBurstTransition trigger={burstTriggered} />
-        
+
         <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-[#f5efe3]/15 bg-[#1c1916]/80 px-4 py-4 backdrop-blur-md md:px-7">
           <div className="flex items-center gap-4">
             <button
@@ -1237,6 +1255,15 @@ function Invitation({
                   className="block h-auto w-full object-contain"
                   loading="eager"
                 />
+                <div className="pointer-events-none absolute inset-0 bg-black/30" />
+                <div className="relative z-10 flex h-full flex-col items-center justify-end p-8 text-center text-[#f5efe3]">
+                  <h1 className="couple-names text-[42px]">
+                    {details.firstName} × {details.secondName}
+                  </h1>
+                  <p className="mt-3 text-[12px] tracking-[.1em]">
+                    التاريخ هنا
+                  </p>
+                </div>
               </div>
             </section>
           ) : (
