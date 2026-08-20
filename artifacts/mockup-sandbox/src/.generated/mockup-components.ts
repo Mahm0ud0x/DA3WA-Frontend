@@ -2,8 +2,8 @@
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 export const modules: ModuleMap = {
   "./components/mockups/templates/SeveranceDinnerPartyInvite-uPpVqV/DinnerPartyPosterSeverance.tsx": () => import("../components/mockups/templates/SeveranceDinnerPartyInvite-uPpVqV/DinnerPartyPosterSeverance.tsx"),
-  "./components/mockups/templates/SwissGridCRMDashboard-ZzdLqR/App.tsx": () => import("../components/mockups/templates/SwissGridCRMDashboard-ZzdLqR/App.tsx"),
-  "./components/mockups/templates/SwissGridCRMDashboard-ZzdLqR-copy-emBlBg2x/SwissGridCRMDashboardZzdLqRCopyEmBlBg2x.tsx": () => import("../components/mockups/templates/SwissGridCRMDashboard-ZzdLqR-copy-emBlBg2x/SwissGridCRMDashboardZzdLqRCopyEmBlBg2x.tsx"),
   "./components/mockups/templates/JapaneseOmakaseLandingPage-Mk7bnY/App.tsx": () => import("../components/mockups/templates/JapaneseOmakaseLandingPage-Mk7bnY/App.tsx"),
+  "./components/mockups/templates/SwissGridCRMDashboard-ZzdLqR-copy-emBlBg2x/SwissGridCRMDashboardZzdLqRCopyEmBlBg2x.tsx": () => import("../components/mockups/templates/SwissGridCRMDashboard-ZzdLqR-copy-emBlBg2x/SwissGridCRMDashboardZzdLqRCopyEmBlBg2x.tsx"),
+  "./components/mockups/templates/SwissGridCRMDashboard-ZzdLqR/App.tsx": () => import("../components/mockups/templates/SwissGridCRMDashboard-ZzdLqR/App.tsx"),
   "./components/mockups/templates/SwissGridCRMDashboard-ZzdLqR-copy-hXuCILnR/SwissGridCRMDashboardZzdLqRCopyHXuCILnR.tsx": () => import("../components/mockups/templates/SwissGridCRMDashboard-ZzdLqR-copy-hXuCILnR/SwissGridCRMDashboardZzdLqRCopyHXuCILnR.tsx")
 };

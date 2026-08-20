@@ -45,6 +45,8 @@ export type Template = {
   tags: Category[];
   image: string;
   backgroundVideo?: string;
+  envelopeVideo?: string;
+  envelopeImage?: string; // ⬅️ صورة الظرف المقفول
   accent: string;
   description: string;
   coverStyle?: "standard" | "image";
@@ -148,7 +150,7 @@ const TEMPLATES: Template[] = [
     nameEn: "Bustan",
     category: "زهور",
     tags: ["زهور", "مودرن"],
-    image: "pic6.jpg",
+    image: "pic7.jpg",
     accent: "#806c4b",
     description: "حديقة خفية تُفتح عند كل تمرير.",
     tier: "standard",
@@ -1030,7 +1032,47 @@ function RSVP() {
     </div>
   );
 }
+const DEFAULT_ENVELOPE_VIDEO = "/intro1.mp4"; // ⬅️ غيّر ده لاسم ملف الفيديو بتاعك في public
+const DEFAULT_ENVELOPE_IMAGE = "/intro1.png"; // ⬅️ صورة الظرف المقفول
 
+function EnvelopeCover({
+  videoSrc,
+  onOpened,
+}: {
+  videoSrc: string;
+  onOpened: () => void;
+}) {
+  const [playing, setPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleStart = () => {
+    setPlaying(true);
+    videoRef.current?.play().catch(() => {});
+  };
+
+  return (
+    <div
+      data-testid="overlay-envelope-cover"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-[#151210]"
+      onClick={!playing ? handleStart : undefined}
+    >
+      <video
+        ref={videoRef}
+        src={videoSrc}
+        muted
+        playsInline
+        preload="auto"
+        onEnded={onOpened}
+        className="absolute inset-0 h-full w-full cursor-pointer object-cover"
+      />
+      {!playing && (
+        <p className="absolute bottom-16 left-1/2 z-10 -translate-x-1/2 animate-pulse text-[11px] tracking-[.25em] text-[#d8bc83]">
+          اضغط لفتح الدعوة
+        </p>
+      )}
+    </div>
+  );
+}
 function Invitation({
   template,
   onClose,
@@ -1039,6 +1081,7 @@ function Invitation({
   onClose: () => void;
 }) {
   const [music, setMusic] = useState(false);
+  const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
   const [parallax, setParallax] = useState(0);
@@ -1050,9 +1093,10 @@ function Invitation({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
+    useEffect(() => {
+      if (!envelopeOpened) return; // ⬅️ جديد: منستناش نشتغل قبل فتح الظرف
+      const container = scrollRef.current;
+      if (!container) return;
 
     let stopped = false;
     let rafId: number;
@@ -1094,7 +1138,7 @@ function Invitation({
       container.removeEventListener("touchstart", stopAutoScroll);
       container.removeEventListener("mousedown", stopAutoScroll);
     };
-  }, []);
+    }, [envelopeOpened]);
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -1121,6 +1165,13 @@ function Invitation({
   return (
     <div className="modal-backdrop fixed inset-0 z-50 bg-[#090807]/90 p-0 backdrop-blur-sm md:p-5">
       <div className="preview-dialog preview-shell relative h-full w-full overflow-hidden bg-[#151210] md:mx-auto md:max-w-[1160px]">
+        {!envelopeOpened && (
+      <EnvelopeCover
+        videoSrc={template.envelopeVideo ?? DEFAULT_ENVELOPE_VIDEO}
+        onOpened={() => setEnvelopeOpened(true)}
+      />
+        )}
+        
         <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-[#f5efe3]/15 bg-[#1c1916]/80 px-4 py-4 backdrop-blur-md md:px-7">
           <div className="flex items-center gap-4">
             <button
