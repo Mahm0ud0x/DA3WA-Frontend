@@ -17,7 +17,7 @@ import {
   VolumeX,
   X,
 } from "lucide-react";
-
+import { LightBurstTransition } from "./LightBurstTransition";
 const WHATSAPP_NUMBER = "966500000000";
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=Riyadh+Kingdom+Centre";
 const EVENT_DATE = new Date("2028-07-23T17:00:00");
@@ -1038,17 +1038,30 @@ const DEFAULT_ENVELOPE_IMAGE = "/intro1.png"; // ⬅️ صورة الظرف ال
 
 function EnvelopeCover({
   videoSrc,
+  onNearEnd,
   onOpened,
 }: {
   videoSrc: string;
+  onNearEnd: () => void;
   onOpened: () => void;
 }) {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const firedRef = useRef(false);
 
   const handleStart = () => {
     setPlaying(true);
     videoRef.current?.play().catch(() => {});
+  };
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video || firedRef.current) return;
+    const timeLeft = video.duration - video.currentTime;
+    if (timeLeft <= 0.5) {
+      firedRef.current = true;
+      onNearEnd();
+    }
   };
 
   return (
@@ -1063,6 +1076,7 @@ function EnvelopeCover({
         muted
         playsInline
         preload="auto"
+        onTimeUpdate={handleTimeUpdate}
         onEnded={onOpened}
         className="absolute inset-0 h-full w-full cursor-pointer object-cover"
       />
@@ -1083,6 +1097,7 @@ function Invitation({
 }) {
   const [music, setMusic] = useState(false);
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
+  const [burstTriggered, setBurstTriggered] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
   const [parallax, setParallax] = useState(0);
@@ -1167,11 +1182,13 @@ function Invitation({
     <div className="modal-backdrop fixed inset-0 z-50 bg-[#090807]/90 p-0 backdrop-blur-sm md:p-5">
       <div className="preview-dialog preview-shell relative h-full w-full overflow-hidden bg-[#151210] md:mx-auto md:max-w-[1160px]">
         {!envelopeOpened && (
-      <EnvelopeCover
-        videoSrc={template.envelopeVideo ?? DEFAULT_ENVELOPE_VIDEO}
-        onOpened={() => setEnvelopeOpened(true)}
-      />
+          <EnvelopeCover
+            videoSrc={template.envelopeVideo ?? DEFAULT_ENVELOPE_VIDEO}
+            onNearEnd={() => setBurstTriggered(true)}
+            onOpened={() => setEnvelopeOpened(true)}
+          />
         )}
+        <LightBurstTransition trigger={burstTriggered} />
         
         <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-[#f5efe3]/15 bg-[#1c1916]/80 px-4 py-4 backdrop-blur-md md:px-7">
           <div className="flex items-center gap-4">

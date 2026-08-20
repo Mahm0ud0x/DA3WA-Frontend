@@ -142,3 +142,29 @@ button { cursor: pointer; }
 .da3wa-app [class*="border-[#203c32"] {
   border-color: rgba(21, 18, 16, .35) !important;
 }
+.light-burst-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  background: #ffffff;
+  opacity: 0;
+}
+
+.light-burst-overlay.flash-in {
+  animation: burstIn calc(var(--burst-duration) * 0.45) ease-out forwards;
+}
+
+.light-burst-overlay.flash-out {
+  animation: burstOut calc(var(--burst-duration) * 0.55) ease-in forwards;
+}
+
+@keyframes burstIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes burstOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
