@@ -93,6 +93,7 @@ const TEMPLATES: Template[] = [
     tags: ["كلاسيك", "رومانسي"],
     image: "/pic2.jpg",
     backgroundVideo: "/vid2.mp4",
+    envelopeVideo: "/intro2.mp4", // ⬅️ فيديو الظرف المفتوح"
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
     tier: "premium",
