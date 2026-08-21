@@ -1,4 +1,12 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type TouchEvent,
+  type CSSProperties,
+} from "react";
 import quranInvitationCover from "@assets/image_1786905347310.png";
 import {
   ArrowUpLeft,
@@ -36,6 +44,7 @@ type InvitationDetails = {
   address: [string, string];
   closing: string;
   countdownDate: Date;
+  namesEn?: string; // ⬅️ جديد: "Sara & Ahmed" - يظهر فوق الخلفية بخط Great Vibes
 };
 export type Template = {
   id: string;
@@ -45,6 +54,7 @@ export type Template = {
   tags: Category[];
   image: string;
   backgroundVideo?: string;
+  backgroundImage?: string; // ⬅️ جديد: خلفية متكررة (illustration) خلف كل شاشات الدعوة
   envelopeVideo?: string;
   envelopeImage?: string; // ⬅️ صورة الظرف المقفول
   accent: string;
@@ -52,6 +62,7 @@ export type Template = {
   coverStyle?: "standard" | "image";
   details?: InvitationDetails;
   tier: "standard" | "premium"; // ⬅️ جديد
+  gallery?: string[]; // ⬅️ جديد: صور معرض الصور (بولارويد متكرر)
 };
 
 const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
@@ -67,6 +78,7 @@ const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
   address: ["طريق الملك فهد، حي العليا", "الرياض، المملكة العربية السعودية"],
   closing: "بكل الحب، سارة وأحمد",
   countdownDate: EVENT_DATE,
+  namesEn: "Sara & Ahmed",
 };
 
 const QURAN_INVITATION_DETAILS: InvitationDetails = {
@@ -110,6 +122,8 @@ const TEMPLATES: Template[] = [
     description: "دعوة مسائية بلون الليل ولمعة الذهب.",
     tier: "premium",
     envelopeVideo: "/intro2.mp4",
+    backgroundImage: "/b1.png",
+    gallery: ["/g1.jpg", "/g2.jpg", "/g3.jpg"],
   },
   {
     id: "ward",
@@ -123,6 +137,8 @@ const TEMPLATES: Template[] = [
     description: "بتلات رقيقة وحكاية تنمو بهدوء.",
     tier: "premium",
     envelopeVideo: "/intro2.mp4",
+    backgroundImage: "/b2.jpg",
+    gallery: ["/g1.jpg", "/g2.jpg", "/g3.jpg"],
   },
   {
     id: "saha",
@@ -881,7 +897,13 @@ function Footer({ onPreview }: { onPreview: () => void }) {
   );
 }
 
-function Countdown({ targetDate = EVENT_DATE }: { targetDate?: Date } = {}) {
+function Countdown({
+  targetDate = EVENT_DATE,
+  dark = false,
+}: {
+  targetDate?: Date;
+  dark?: boolean;
+} = {}) {
   const [remaining, setRemaining] = useState(() =>
     Math.max(0, targetDate.getTime() - Date.now()),
   );
@@ -904,24 +926,36 @@ function Countdown({ targetDate = EVENT_DATE }: { targetDate?: Date } = {}) {
     [seconds, "الثواني"],
   ];
   return (
-    <div className="grid grid-cols-4 border-y border-[#b9965b]/30" dir="rtl">
+    <div
+      className="grid grid-cols-4 border-y"
+      style={{ borderColor: "var(--invite-accent, #b9965b)", opacity: 1 }}
+      dir="rtl"
+    >
       {values.map(([value, label]) => (
         <div
           data-testid={`countdown-${label}`}
           key={label}
-          className="countdown-cell border-l border-[#b9965b]/20 px-2 py-5 text-center last:border-l-0"
+          className="countdown-cell border-l px-2 py-5 text-center last:border-l-0"
+          style={{ borderColor: "rgba(0,0,0,.08)" }}
         >
-          <div className="serif text-[32px] text-[#c8a96d] md:text-[44px]">
+          <div
+            className="serif text-[32px] md:text-[44px]"
+            style={{ color: "var(--invite-accent, #c8a96d)" }}
+          >
             {String(value).padStart(2, "0")}
           </div>
-          <div className="mt-1 text-[9px] text-[#f5efe3]/50">{label}</div>
+          <div
+            className={`mt-1 text-[9px] ${dark ? "text-[#151210]/55" : "text-[#f5efe3]/50"}`}
+          >
+            {label}
+          </div>
         </div>
       ))}
     </div>
   );
 }
 
-function Timeline() {
+function Timeline({ dark = false }: { dark?: boolean } = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -953,8 +987,17 @@ function Timeline() {
           className={`timeline-item relative mb-10 flex items-center gap-5 last:mb-0 ${index % 2 ? "flex-row-reverse text-left" : "text-right"} ${visible ? "visible" : ""}`}
         >
           <div className="w-1/2">
-            <div className="mono text-[14px] text-[#c8a96d]">{time}</div>
-            <div className="mt-2 text-[12px] text-[#f5efe3]/65">{title}</div>
+            <div
+              className="mono text-[14px]"
+              style={{ color: "var(--invite-accent, #c8a96d)" }}
+            >
+              {time}
+            </div>
+            <div
+              className={`mt-2 text-[12px] ${dark ? "text-[#151210]/70" : "text-[#f5efe3]/65"}`}
+            >
+              {title}
+            </div>
           </div>
           <div className="z-10 h-2.5 w-2.5 shrink-0 rotate-45 border border-[#d8bc83] bg-[#151210]" />
           <div className="w-1/2" />
@@ -974,16 +1017,16 @@ function RSVP() {
           data-testid="status-rsvp-success"
           className="border border-[#b9965b]/40 bg-[#b9965b]/10 px-6 py-12 text-center"
         >
-          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center border border-[#b9965b] text-[#d8bc83]">
+          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center border border-[#b9965b] text-[#a17e43]">
             <Check size={19} />
           </div>
-          <p className="arabic-display text-[26px] text-[#f5efe3]">
+          <p className="arabic-display text-[26px] text-[#151210]">
             شكرًا لتأكيد حضوركم 🤍
           </p>
           <button
             data-testid="button-rsvp-again"
             onClick={() => setSubmitted(false)}
-            className="mt-6 text-[10px] text-[#d8bc83] underline underline-offset-4"
+            className="mt-6 text-[10px] text-[#a17e43] underline underline-offset-4"
           >
             تعديل الرد
           </button>
@@ -995,26 +1038,26 @@ function RSVP() {
             event.preventDefault();
             setSubmitted(true);
           }}
-          className="border-t border-[#b9965b]/30 pt-7"
+          className="border-t border-[#151210]/10 pt-7"
         >
           <label className="mb-5 block">
-            <span className="mb-2 block text-[10px] text-[#f5efe3]/55">
+            <span className="mb-2 block text-[10px] text-[#151210]/55">
               الاسم
             </span>
             <input
               data-testid="input-rsvp-name"
               required
-              className="w-full border-b border-[#b9965b]/35 bg-transparent px-1 py-3 text-sm text-[#f5efe3] outline-none transition focus:border-[#d8bc83]"
+              className="w-full border-b border-[#151210]/20 bg-transparent px-1 py-3 text-sm text-[#151210] outline-none transition focus:border-[#a17e43]"
               placeholder="اكتبوا الاسم الكريم"
             />
           </label>
           <label className="mb-6 block">
-            <span className="mb-2 block text-[10px] text-[#f5efe3]/55">
+            <span className="mb-2 block text-[10px] text-[#151210]/55">
               عدد المرافقين
             </span>
             <select
               data-testid="select-rsvp-guests"
-              className="w-full border-b border-[#b9965b]/35 bg-transparent px-1 py-3 text-sm text-[#f5efe3] outline-none [&>option]:text-[#151210]"
+              className="w-full border-b border-[#151210]/20 bg-transparent px-1 py-3 text-sm text-[#151210] outline-none [&>option]:text-[#151210]"
             >
               <option value="0">بدون مرافقين</option>
               <option value="1">مرافق واحد</option>
@@ -1027,7 +1070,7 @@ function RSVP() {
               type="button"
               data-testid="button-rsvp-yes"
               onClick={() => setAttending("yes")}
-              className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "yes" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#d8bc83]" : "border-[#b9965b]/30 text-[#f5efe3]/55"}`}
+              className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "yes" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#a17e43]" : "border-[#151210]/15 text-[#151210]/55"}`}
             >
               سأحضر
             </button>
@@ -1035,14 +1078,14 @@ function RSVP() {
               type="button"
               data-testid="button-rsvp-no"
               onClick={() => setAttending("no")}
-              className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "no" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#d8bc83]" : "border-[#b9965b]/30 text-[#f5efe3]/55"}`}
+              className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "no" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#a17e43]" : "border-[#151210]/15 text-[#151210]/55"}`}
             >
               لن أتمكن من الحضور
             </button>
           </div>
           <button
             data-testid="button-rsvp-submit"
-            className="luxury-button w-full border border-[#b9965b] px-5 py-3 text-[11px] text-[#d8bc83]"
+            className="luxury-button w-full border border-[#b9965b] px-5 py-3 text-[11px] text-[#151210]"
           >
             تأكيد الحضور
           </button>
@@ -1051,6 +1094,66 @@ function RSVP() {
     </div>
   );
 }
+function PhotoGalleryCarousel({ images }: { images: string[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartX = useRef(0);
+
+  if (!images || images.length === 0) return null;
+
+  const goTo = (index: number) => {
+    setActiveIndex((index + images.length) % images.length);
+  };
+
+  const handleTouchStart = (e: TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: TouchEvent) => {
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (delta > 50) goTo(activeIndex - 1);
+    else if (delta < -50) goTo(activeIndex + 1);
+  };
+
+  return (
+    <div
+      className="relative w-full max-w-sm mx-auto h-72 flex items-center justify-center"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      data-testid="gallery-carousel"
+    >
+      {images.map((src, i) => {
+        const offset = i - activeIndex;
+        if (Math.abs(offset) > 1) return null;
+        return (
+          <div
+            key={src + i}
+            className="polaroid-card absolute w-48 h-60 cursor-pointer"
+            style={{
+              transform: `translateX(${offset * 60}px) rotate(${
+                offset === 0 ? -2 : offset * 6 - 2
+              }deg) scale(${offset === 0 ? 1 : 0.85})`,
+              zIndex: offset === 0 ? 10 : 5,
+              opacity: offset === 0 ? 1 : 0.6,
+            }}
+            onClick={() => goTo(i)}
+          >
+            <img src={src} alt={`صورة ${i + 1}`} />
+          </div>
+        );
+      })}
+      <div className="gallery-dots absolute -bottom-8 left-1/2 -translate-x-1/2">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`الصورة ${i + 1}`}
+            className={`dot ${i === activeIndex ? "active" : ""}`}
+            onClick={() => goTo(i)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const DEFAULT_ENVELOPE_VIDEO = "/intro1.mp4"; // ⬅️ غيّر ده لاسم ملف الفيديو بتاعك في public
 const DEFAULT_ENVELOPE_IMAGE = "/intro1.png"; // ⬅️ صورة الظرف المقفول
 
@@ -1208,43 +1311,26 @@ function Invitation({
         )}
         <LightBurstTransition trigger={burstTriggered} />
 
-        <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-[#f5efe3]/15 bg-[#1c1916]/80 px-4 py-4 backdrop-blur-md md:px-7">
-          <div className="flex items-center gap-4">
-            <button
-              data-testid="button-close-invitation"
-              onClick={onClose}
-              className="border border-[#f5efe3]/25 p-2 text-[#f5efe3] transition hover:border-[#d8bc83]"
-              aria-label="إغلاق الدعوة"
-            >
-              <X size={17} />
-            </button>
-            <div className="hidden text-[10px] text-[#f5efe3]/50 md:block">
-              دعوة حية · {template.name}
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              data-testid="button-share-invitation"
-              onClick={share}
-              className="flex items-center gap-2 border border-[#f5efe3]/25 px-3 py-2 text-[9px] text-[#f5efe3]/75 transition hover:border-[#d8bc83]"
-            >
-              <Share2 size={13} />{" "}
-              <span>{shared ? "تمت المشاركة" : "مشاركة الدعوة"}</span>
-            </button>
-            <button
-              data-testid="button-copy-invitation"
-              onClick={copyLink}
-              className="flex items-center gap-2 border border-[#f5efe3]/25 px-3 py-2 text-[9px] text-[#f5efe3]/75 transition hover:border-[#d8bc83]"
-            >
-              <Copy size={13} />{" "}
-              <span>{copied ? "تم نسخ الرابط ✓" : "نسخ الرابط"}</span>
-            </button>
-          </div>
-        </div>
+        <button
+          data-testid="button-close-invitation"
+          onClick={onClose}
+          className="absolute right-4 top-4 z-50 flex h-8 w-8 items-center justify-center text-[#f5efe3]/80 transition hover:text-[#f5efe3]"
+          aria-label="إغلاق الدعوة"
+        >
+          <X size={18} />
+        </button>
         <div
           ref={scrollRef}
-          className="preview-scroll h-full overflow-y-auto"
+          className="preview-scroll invitation-bg h-full overflow-y-auto"
           dir="rtl"
+          style={
+            {
+              "--invite-accent": template.accent,
+              "--invite-bg-image": template.backgroundImage
+                ? `url(${template.backgroundImage})`
+                : "none",
+            } as CSSProperties
+          }
         >
           {template.coverStyle === "image" ? (
             <section className="relative flex min-h-[740px] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
@@ -1267,7 +1353,7 @@ function Invitation({
               </div>
             </section>
           ) : (
-            <section className="relative flex min-h-[740px] items-end overflow-hidden px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
+              <section className="relative flex min-h-[740px] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
               {template.backgroundVideo ? (
                 <video
                   autoPlay
@@ -1294,35 +1380,42 @@ function Invitation({
               <div className="petal" />
               <div className="petal" />
               <div className="petal" />
-              <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
-                <div className="reveal-up eyebrow mb-8 text-[30px] font-bold text-[#d8bc83]">
-                  دعوة زفاف
+                <div className="absolute inset-x-0 top-[145px] z-10 mx-auto w-full max-w-[780px] px-6 text-center md:top-[170px]">
+                  <h1 className="reveal-up delay-1 couple-names text-[48px] font-normal leading-[1.05] text-[#e5c989] md:text-[72px]">
+                    {details.firstName}{" "}
+                    <span className="serif text-[30px] text-[#f5efe3]/70 md:text-[42px]">
+                      &amp;
+                    </span>{" "}
+                    {details.secondName}
+                  </h1>
+
+                  {details.namesEn && (
+                    <p className="couple-names-en reveal-up delay-2 mt-3">
+                      {details.namesEn}
+                    </p>
+                  )}
                 </div>
-                <div className="reveal-up delay-1 mx-auto mb-8 h-16 w-px bg-[#b9965b]" />
-                <h1 className="reveal-up delay-1 couple-names text-[58px] font-normal leading-[1.05] text-[#e5c989] md:text-[94px]">
-                  {details.firstName}{" "}
-                  <span className="serif text-[38px] text-[#f5efe3]/70 md:text-[55px]">
-                    &amp;
-                  </span>{" "}
-                  {details.secondName}
-                </h1>
-                <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
-                  {details.dateLine}
-                </p>
-                <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
-                  <Countdown targetDate={details.countdownDate} />
-                </div>
-                <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
-                  <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
-                    <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
-                    <Heart size={13} className="text-[#c8a96d]" />
+
+                <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
+                  <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
+                    {details.dateLine}
+                  </p>
+
+                  <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
+                    <Countdown targetDate={details.countdownDate} />
+                  </div>
+
+                  <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
+                    <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
+                      <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
+                      <Heart size={13} className="text-[#c8a96d]" />
+                    </div>
                   </div>
                 </div>
-              </div>
             </section>
           )}
-          <section className="invitation-section bg-[#f2ecdf] px-6 py-24 text-center text-[#151210] md:px-20 md:py-36">
-            <div className="relative z-10 mx-auto max-w-[760px]">
+          <section className="invitation-section px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
+            <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
               <div className="eyebrow mb-8 text-[#a17e43]">
                 بسم الله الرحمن الرحيم
               </div>
@@ -1339,19 +1432,19 @@ function Invitation({
               </p>
             </div>
           </section>
-          <section className="bg-[#151210] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
-            <div className="mx-auto max-w-[760px] text-center">
-              <div className="eyebrow mb-6 text-[#d8bc83]">
+          <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+            <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-16 md:py-16">
+              <div className="eyebrow mb-6 text-[#a17e43]">
                 الوقت يمضي نحو فرحتنا
               </div>
               <h2 className="arabic-display mb-12 text-[38px] font-normal md:text-[55px]">
                 ننتظركم
               </h2>
-              <Countdown targetDate={details.countdownDate} />
+              <Countdown targetDate={details.countdownDate} dark />
             </div>
           </section>
-          <section className="bg-[#e5ddcf] px-6 py-24 text-[#151210] md:px-20 md:py-36">
-            <div className="mx-auto grid max-w-[780px] items-center gap-12 md:grid-cols-[.8fr_1.2fr]">
+          <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+            <div className="glass-card mx-auto grid max-w-[780px] items-center gap-12 px-6 py-12 md:grid-cols-[.8fr_1.2fr] md:px-14 md:py-14">
               <div className="border border-[#b9965b] p-3">
                 <div className="flex aspect-[.85/1] flex-col items-center justify-center border border-[#b9965b]/40 text-center">
                   <span className="eyebrow text-[#a17e43]">موعدنا</span>
@@ -1386,30 +1479,41 @@ function Invitation({
               </div>
             </div>
           </section>
-          <section className="bg-[#1c1916] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
-            <div className="mx-auto max-w-[760px]">
+          <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+            <div className="glass-card mx-auto max-w-[760px] px-6 py-12 md:px-14 md:py-14">
               <div className="mb-14 text-center">
-                <div className="eyebrow mb-5 text-[#d8bc83]">
+                <div className="eyebrow mb-5 text-[#a17e43]">
                   تفاصيل الأمسية
                 </div>
                 <h2 className="arabic-display text-[43px] font-normal">
                   حين يبدأ الاحتفال
                 </h2>
               </div>
-              <Timeline />
+              <Timeline dark />
             </div>
           </section>
-          <section className="bg-[#f2ecdf] px-6 py-24 text-[#151210] md:px-20 md:py-36">
-            <div className="mx-auto grid max-w-[850px] items-center gap-12 md:grid-cols-[1.1fr_.9fr]">
-              <div className="relative aspect-[1.1/1] overflow-hidden">
+          {template.gallery && template.gallery.length > 0 && (
+            <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+              <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-14 md:py-14">
+                <div className="eyebrow mb-3 text-[#a17e43]">معرض الصور</div>
+                <h2 className="arabic-display mb-10 text-[32px] font-normal md:text-[40px]">
+                  لحظاتنا الجميلة
+                </h2>
+                <PhotoGalleryCarousel images={template.gallery} />
+              </div>
+            </section>
+          )}
+          <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+            <div className="glass-card mx-auto grid max-w-[850px] items-center gap-12 p-4 md:grid-cols-[1.1fr_.9fr] md:p-6">
+              <div className="relative aspect-[1.1/1] overflow-hidden rounded-[18px]">
                 <img
                   src={template.image}
                   alt="موقع المناسبة"
                   className="h-full w-full object-cover grayscale-[.15]"
                 />
-                <div className="absolute inset-5 border border-[#f5efe3]/50" />
+                <div className="absolute inset-3 border border-white/50 rounded-[10px]" />
               </div>
-              <div>
+              <div className="px-2 pb-4 md:px-4">
                 <div className="eyebrow mb-5 text-[#a17e43]">المكان</div>
                 <h2 className="arabic-display text-[43px] leading-tight">
                   {details.venueTitle[0]}
@@ -1434,17 +1538,17 @@ function Invitation({
               </div>
             </div>
           </section>
-          <section className="bg-[#151210] px-6 py-24 text-[#f5efe3] md:px-20 md:py-36">
-            <div className="mx-auto max-w-[650px] text-center">
-              <div className="eyebrow mb-5 text-[#d8bc83]">ننتظركم بمحبة</div>
+          <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+            <div className="glass-card mx-auto max-w-[650px] px-6 py-12 text-center md:px-14 md:py-14">
+              <div className="eyebrow mb-5 text-[#a17e43]">ننتظركم بمحبة</div>
               <h2 className="arabic-display mb-12 text-[43px] font-normal md:text-[58px]">
                 تأكيد الحضور
               </h2>
               <RSVP />
             </div>
           </section>
-          <section className="bg-[#e5ddcf] px-6 py-20 text-center text-[#151210] md:px-20">
-            <div className="mx-auto max-w-[620px]">
+          <section className="px-4 py-16 text-center text-[#151210] md:px-20">
+            <div className="glass-card mx-auto max-w-[620px] px-6 py-10 md:px-10">
               <div className="flex items-center justify-center gap-3">
                 <button
                   data-testid="button-toggle-music"
