@@ -157,6 +157,14 @@ button { cursor: pointer; }
   background-color: #f4efe6;
   background-attachment: local;
 }
+.invitation-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 0;
+}
 .cover-fade-overlay {
   position: absolute;
   top: 0;
