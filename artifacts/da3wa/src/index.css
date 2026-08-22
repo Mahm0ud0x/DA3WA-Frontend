@@ -155,6 +155,26 @@ button { cursor: pointer; }
   background-size: 100% auto;
   background-position: top center;
   background-color: #f4efe6;
+  background-attachment: local;
+}
+.cover-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 260px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #151210 0%,
+    rgba(21, 18, 16, 0.55) 45%,
+    rgba(21, 18, 16, 0) 100%
+  );
+}
+
+@media (max-width: 767px) {
+  .cover-fade-overlay { height: 180px; }
 }
 
 /* كارت زجاجي شفاف - ده الـ"ويندوز الشفافة" اللي كل سكشن هيتلف فيه بدل

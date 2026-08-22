@@ -1414,8 +1414,9 @@ function Invitation({
                 </div>
             </section>
           )}
-          <section className="invitation-section px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
-            <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
+              <section className="invitation-section relative px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
+                <div className="cover-fade-overlay" />
+                <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
               <div className="eyebrow mb-8 text-[#a17e43]">
                 بسم الله الرحمن الرحيم
               </div>
