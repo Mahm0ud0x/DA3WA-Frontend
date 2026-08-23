@@ -83,6 +83,7 @@ export const TEMPLATES: Template[] = [
     accent: "#b49667",
     description: "هدوء كلاسيكي يترك أثره من النظرة الأولى.",
     tier: "premium",
+    backgroundImage: "/b4.jpg",
   },
   {
     id: "layl",
@@ -126,6 +127,7 @@ export const TEMPLATES: Template[] = [
     description: "لغة معاصرة لمساحة عربية رحبة.",
     tier: "premium",
     envelopeVideo: "/intro2.mp4",
+    backgroundImage: "/b3.jpg",
   },
   {
     id: "malika",
@@ -139,6 +141,7 @@ export const TEMPLATES: Template[] = [
     description: "تفاصيل ملكية لا تحتاج إلى شرح.",
     tier: "premium",
     envelopeVideo: "/intro2.mp4",
+    backgroundImage: "/b5.jpg",
   },
   {
     id: "bustan",
