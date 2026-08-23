@@ -25,6 +25,7 @@ import {
   VolumeX,
   X,
 } from "lucide-react";
+import { MusicPlayer } from "./MusicPlayer";
 import { LightBurstTransition } from "./LightBurstTransition";
 const WHATSAPP_NUMBER = "966500000000";
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=Riyadh+Kingdom+Centre";
@@ -1216,7 +1217,6 @@ function Invitation({
   template: Template;
   onClose: () => void;
 }) {
-  const [music, setMusic] = useState(false);
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const [burstTriggered, setBurstTriggered] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -1310,6 +1310,7 @@ function Invitation({
           />
         )}
         <LightBurstTransition trigger={burstTriggered} />
+        <MusicPlayer src="/bmusic2.mp3" shouldPlay={envelopeOpened} />
 
         <button
           data-testid="button-close-invitation"
@@ -1353,7 +1354,7 @@ function Invitation({
               </div>
             </section>
           ) : (
-              <section className="relative flex min-h-[740px] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
+            <section className="relative flex min-h-[740px] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
               {template.backgroundVideo ? (
                 <video
                   autoPlay
@@ -1380,43 +1381,43 @@ function Invitation({
               <div className="petal" />
               <div className="petal" />
               <div className="petal" />
-                <div className="absolute inset-x-0 top-[145px] z-10 mx-auto w-full max-w-[780px] px-6 text-center md:top-[170px]">
-                  <h1 className="reveal-up delay-1 couple-names text-[48px] font-normal leading-[1.05] text-[#e5c989] md:text-[72px]">
-                    {details.firstName}{" "}
-                    <span className="serif text-[30px] text-[#f5efe3]/70 md:text-[42px]">
-                      &amp;
-                    </span>{" "}
-                    {details.secondName}
-                  </h1>
+              <div className="absolute inset-x-0 top-[145px] z-10 mx-auto w-full max-w-[780px] px-6 text-center md:top-[170px]">
+                <h1 className="reveal-up delay-1 couple-names text-[48px] font-normal leading-[1.05] text-[#e5c989] md:text-[72px]">
+                  {details.firstName}{" "}
+                  <span className="serif text-[30px] text-[#f5efe3]/70 md:text-[42px]">
+                    &amp;
+                  </span>{" "}
+                  {details.secondName}
+                </h1>
 
-                  {details.namesEn && (
-                    <p className="couple-names-en reveal-up delay-2 mt-3">
-                      {details.namesEn}
-                    </p>
-                  )}
-                </div>
-
-                <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
-                  <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
-                    {details.dateLine}
+                {details.namesEn && (
+                  <p className="couple-names-en reveal-up delay-2 mt-3">
+                    {details.namesEn}
                   </p>
+                )}
+              </div>
 
-                  <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
-                    <Countdown targetDate={details.countdownDate} />
-                  </div>
+              <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
+                <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
+                  {details.dateLine}
+                </p>
 
-                  <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
-                    <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
-                      <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
-                      <Heart size={13} className="text-[#c8a96d]" />
-                    </div>
+                <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
+                  <Countdown targetDate={details.countdownDate} />
+                </div>
+
+                <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
+                  <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
+                    <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
+                    <Heart size={13} className="text-[#c8a96d]" />
                   </div>
                 </div>
+              </div>
             </section>
           )}
-              <section className="invitation-section relative px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
-                <div className="cover-fade-overlay" />
-                <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
+          <section className="invitation-section relative px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
+            <div className="cover-fade-overlay" />
+            <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
               <div className="eyebrow mb-8 text-[#a17e43]">
                 بسم الله الرحمن الرحيم
               </div>
@@ -1550,21 +1551,7 @@ function Invitation({
           </section>
           <section className="px-4 py-16 text-center text-[#151210] md:px-20">
             <div className="glass-card mx-auto max-w-[620px] px-6 py-10 md:px-10">
-              <div className="flex items-center justify-center gap-3">
-                <button
-                  data-testid="button-toggle-music"
-                  onClick={() => setMusic(!music)}
-                  className="flex items-center gap-3 border border-[#151210]/30 px-5 py-3 text-[10px] transition hover:border-[#b9965b]"
-                >
-                  {music ? <Volume2 size={15} /> : <VolumeX size={15} />}
-                  <span>{music ? "الموسيقى مفعلة" : "شغّل موسيقى الدعوة"}</span>
-                  {music ? <Pause size={13} /> : <Play size={13} />}
-                </button>
-              </div>
-              <p className="mt-5 text-[10px] text-[#74685d]">
-                اضغط لتشغيل الموسيقى — لا يبدأ التشغيل تلقائياً.
-              </p>
-              <div className="mx-auto mt-10 flex justify-center gap-4">
+              <div className="mx-auto flex justify-center gap-4">
                 <button
                   data-testid="button-share-bottom"
                   onClick={share}
