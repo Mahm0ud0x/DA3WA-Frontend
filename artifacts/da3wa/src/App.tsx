@@ -1008,9 +1008,46 @@ function Timeline({ dark = false }: { dark?: boolean } = {}) {
   );
 }
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkjweazr"; // ⬅️ حط رابطك هنا
+
 function RSVP() {
   const [submitted, setSubmitted] = useState(false);
   const [attending, setAttending] = useState("yes");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(false);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const clientSlug = window.location.pathname.replace(/^\/+/, "") || "unknown";
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: (() => {
+          formData.append("attending", attending);
+          formData.append("client", clientSlug);
+          return formData;
+        })(),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setError(true);
+      }
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-[580px]">
       {submitted ? (
@@ -1035,10 +1072,7 @@ function RSVP() {
       ) : (
         <form
           data-testid="form-rsvp"
-          onSubmit={(event) => {
-            event.preventDefault();
-            setSubmitted(true);
-          }}
+          onSubmit={handleSubmit}
           className="border-t border-[#151210]/10 pt-7"
         >
           <label className="mb-5 block">
@@ -1047,6 +1081,7 @@ function RSVP() {
             </span>
             <input
               data-testid="input-rsvp-name"
+              name="name"
               required
               className="w-full border-b border-[#151210]/20 bg-transparent px-1 py-3 text-sm text-[#151210] outline-none transition focus:border-[#a17e43]"
               placeholder="اكتبوا الاسم الكريم"
@@ -1058,6 +1093,7 @@ function RSVP() {
             </span>
             <select
               data-testid="select-rsvp-guests"
+              name="guests"
               className="w-full border-b border-[#151210]/20 bg-transparent px-1 py-3 text-sm text-[#151210] outline-none [&>option]:text-[#151210]"
             >
               <option value="0">بدون مرافقين</option>
@@ -1084,11 +1120,17 @@ function RSVP() {
               لن أتمكن من الحضور
             </button>
           </div>
+          {error && (
+            <p className="mb-4 text-center text-[10px] text-red-600">
+              حصل خطأ، حاولوا تاني من فضلكم
+            </p>
+          )}
           <button
             data-testid="button-rsvp-submit"
-            className="luxury-button w-full border border-[#b9965b] px-5 py-3 text-[11px] text-[#151210]"
+            disabled={loading}
+            className="luxury-button w-full border border-[#b9965b] px-5 py-3 text-[11px] text-[#151210] disabled:opacity-50"
           >
-            تأكيد الحضور
+            {loading ? "جاري الإرسال..." : "تأكيد الحضور"}
           </button>
         </form>
       )}
