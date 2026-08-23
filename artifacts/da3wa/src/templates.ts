@@ -97,7 +97,7 @@ export const TEMPLATES: Template[] = [
     description: "دعوة مسائية بلون الليل ولمعة الذهب.",
     tier: "premium",
     envelopeVideo: "/intro2.mp4",
-    backgroundImage: "/b1.png",
+    backgroundImage: "/b1.jpg",
     gallery: ["/g1.jpg", "/g2.jpg", "/g3.jpg"],
   },
   {
