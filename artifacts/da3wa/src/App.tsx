@@ -1008,7 +1008,7 @@ function Timeline({ dark = false }: { dark?: boolean } = {}) {
   );
 }
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkjweazr"; // ⬅️ حط رابطك هنا
+const SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw-ZRthtg8gFFYkD4kK-S_nmJUWS3lZAixPB3bff6xROXrBBNjFTYiJlBMcWsQG6nDJmg/exec";
 
 function RSVP() {
   const [submitted, setSubmitted] = useState(false);
@@ -1025,22 +1025,21 @@ function RSVP() {
     const formData = new FormData(form);
     const clientSlug = window.location.pathname.replace(/^\/+/, "") || "unknown";
 
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: (() => {
-          formData.append("attending", attending);
-          formData.append("client", clientSlug);
-          return formData;
-        })(),
-      });
+    const payload = {
+      name: formData.get("name"),
+      guests: formData.get("guests"),
+      attending: attending,
+      client: clientSlug,
+    };
 
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        setError(true);
-      }
+    try {
+      await fetch(SHEETS_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload),
+      });
+      setSubmitted(true);
     } catch {
       setError(true);
     } finally {
@@ -1137,6 +1136,8 @@ function RSVP() {
     </div>
   );
 }
+
+
 function PhotoGalleryCarousel({ images }: { images: string[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef(0);
