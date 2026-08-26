@@ -958,7 +958,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
         >
           <label className="mb-5 block">
             <span className="mb-2 block text-[10px] text-[#151210]/55">
-              الاسم
+              {t.rsvpNameLabel}
             </span>
             <input
               data-testid="input-rsvp-name"
@@ -970,7 +970,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
           </label>
           <label className="mb-6 block">
             <span className="mb-2 block text-[10px] text-[#151210]/55">
-              عدد المرافقين
+              {t.rsvpGuestsLabel}
             </span>
             <select
               data-testid="select-rsvp-guests"
@@ -990,7 +990,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
               onClick={() => setAttending("yes")}
               className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "yes" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#a17e43]" : "border-[#151210]/15 text-[#151210]/55"}`}
             >
-              سأحضر
+              {t.rsvpYes}
             </button>
             <button
               type="button"
@@ -998,7 +998,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
               onClick={() => setAttending("no")}
               className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "no" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#a17e43]" : "border-[#151210]/15 text-[#151210]/55"}`}
             >
-              لن أتمكن من الحضور
+              {t.rsvpNo}
             </button>
           </div>
           {error && (
@@ -1011,7 +1011,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
             disabled={loading}
             className="luxury-button w-full border border-[#b9965b] px-5 py-3 text-[11px] text-[#151210] disabled:opacity-50"
           >
-            {loading ? "جاري الإرسال..." : "تأكيد الحضور"}
+            {loading ? t.rsvpSending : t.rsvpSubmit}
           </button>
         </form>
       )}
@@ -1398,11 +1398,9 @@ function Invitation({
           </div>
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-16 md:py-16">
-              <div className="eyebrow mb-6 text-[#a17e43]">
-                الوقت يمضي نحو فرحتنا
-              </div>
+              <div className="eyebrow mb-6 text-[#a17e43]">{t.welcomeEyebrow}</div>
               <h2 className="arabic-display mb-12 text-[38px] font-normal md:text-[55px]">
-                ننتظركم
+                {t.welcomeTitle}
               </h2>
               <Countdown targetDate={details.countdownDate} dark />
             </div>
@@ -1428,17 +1426,14 @@ function Invitation({
                 </div>
               </div>
               <div>
-                <div className="eyebrow mb-5 text-[#a17e43]">
-                  التاريخ والموعد
-                </div>
+                <div className="eyebrow mb-5 text-[#a17e43]">{t.dateEyebrow}</div>
                 <h2 className="arabic-display text-[42px] leading-tight md:text-[58px]">
-                  احفظوا
+                  {t.dateTitleLine1}
                   <br />
-                  الموعد.
+                  {t.dateTitleLine2}
                 </h2>
                 <p className="mt-6 text-[12px] leading-8 text-[#74685d]">
-                  سنكون بانتظاركم في أمسية تليق بهذه البداية. حضوركم هو أجمل ما
-                  نتمناه.
+                  {t.dateBody}
                 </p>
               </div>
             </div>
@@ -1446,11 +1441,9 @@ function Invitation({
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[760px] px-6 py-12 md:px-14 md:py-14">
               <div className="mb-14 text-center">
-                <div className="eyebrow mb-5 text-[#a17e43]">
-                  تفاصيل الأمسية
-                </div>
+                <div className="eyebrow mb-5 text-[#a17e43]">{t.scheduleEyebrow}</div>
                 <h2 className="arabic-display text-[43px] font-normal">
-                  حين يبدأ الاحتفال
+                  {t.scheduleTitle}
                 </h2>
               </div>
               <Timeline dark />
@@ -1459,9 +1452,9 @@ function Invitation({
           {template.gallery && template.gallery.length > 0 && (
             <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
               <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-14 md:py-14">
-                <div className="eyebrow mb-3 text-[#a17e43]">معرض الصور</div>
+                <div className="eyebrow mb-3 text-[#a17e43]">{t.galleryEyebrow}</div>
                 <h2 className="arabic-display mb-10 text-[32px] font-normal md:text-[40px]">
-                  لحظاتنا الجميلة
+                  {t.galleryTitle}
                 </h2>
                 <PhotoGalleryCarousel images={template.gallery} />
               </div>
@@ -1478,7 +1471,7 @@ function Invitation({
                 <div className="absolute inset-3 border border-white/50 rounded-[10px]" />
               </div>
               <div className="px-2 pb-4 md:px-4">
-                <div className="eyebrow mb-5 text-[#a17e43]">المكان</div>
+                <div className="eyebrow mb-5 text-[#a17e43]">{t.locationEyebrow}</div>
                 <h2 className="arabic-display text-[43px] leading-tight">
                   {details.venueTitle[0]}
                   <br />
@@ -1496,7 +1489,7 @@ function Invitation({
                   rel="noreferrer"
                   className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#151210] px-5 py-3 text-[10px] text-[#151210]"
                 >
-                  <span>فتح الموقع</span>
+                  <span>{t.openLocation}</span>
                   <MapPin size={14} />
                 </a>
               </div>
@@ -1504,11 +1497,11 @@ function Invitation({
           </section>
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[650px] px-6 py-12 text-center md:px-14 md:py-14">
-              <div className="eyebrow mb-5 text-[#a17e43]">ننتظركم بمحبة</div>
+              <div className="eyebrow mb-5 text-[#a17e43]">{t.rsvpEyebrow}</div>
               <h2 className="arabic-display mb-12 text-[43px] font-normal md:text-[58px]">
-                تأكيد الحضور
+                {t.rsvpTitle}
               </h2>
-              <RSVP />
+              <RSVP t={t} />
             </div>
           </section>
           <section className="px-4 py-16 text-center text-[#151210] md:px-20">
@@ -1520,7 +1513,7 @@ function Invitation({
                   className="flex items-center gap-2 text-[10px] text-[#6d6257] transition hover:text-[#a17e43]"
                 >
                   <Share2 size={14} />{" "}
-                  {shared ? "تمت المشاركة" : "مشاركة الدعوة"}
+                  {shared ? t.shared : t.share}
                 </button>
                 <span className="text-[#b9965b]">·</span>
                 <button
@@ -1528,7 +1521,7 @@ function Invitation({
                   onClick={copyLink}
                   className="flex items-center gap-2 text-[10px] text-[#6d6257] transition hover:text-[#a17e43]"
                 >
-                  <Copy size={14} /> {copied ? "تم نسخ الرابط ✓" : "نسخ الرابط"}
+                  <Copy size={14} /> {copied ? t.copied : t.copyLink}
                 </button>
               </div>
             </div>
@@ -1545,7 +1538,7 @@ function Invitation({
               onClick={() => orderOnWhatsApp(template.name)}
               className="luxury-button mt-8 border border-[#b9965b] px-6 py-3 text-[10px] text-[#d8bc83]"
             >
-              اصنعوا دعوتكم مع DA3WA
+              {t.footerCta}
             </button>
           </footer>
         </div>
