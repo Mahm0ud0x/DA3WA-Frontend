@@ -29,6 +29,8 @@
   --app-font-serif: 'Amiri', serif;
   --app-font-display: 'Aref Ruqaa', serif;
   --app-font-mono: 'DM Mono', monospace;
+  --app-font-display-en: 'Pinyon Script', cursive;
+--app-font-display-ar: 'Aref Ruqaa', serif;
   --radius: 0.25rem;
 }
 
@@ -196,13 +198,11 @@ button { cursor: pointer; }
 }
 
 /* اسم العروسين بالإنجليزي بخط script فوق صورة الغلاف */
-.couple-names-en {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(2rem, 7vw, 3.4rem);
-  color: #ffffff;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.5px;
-  line-height: 1;
+  .couple-names-en {
+    font-family: 'Great Vibes', cursive;
+    color: #ffffff;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
 }
 
 /* ============================================

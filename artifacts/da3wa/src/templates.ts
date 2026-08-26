@@ -6,6 +6,7 @@ export type InvitationDetails = {
   firstName: string;
   secondName: string;
   dateLine: string;
+  dateLineEn?: string;
   day: string;
   locationImage?: string;
   mapsUrl?: string;
@@ -36,6 +37,7 @@ export type Template = {
   coverStyle?: "standard" | "image";
   details?: InvitationDetails;
   tier: "standard" | "premium";
+  languages?: ("ar" | "en")[];
   gallery?: string[];
 };
 
@@ -99,6 +101,7 @@ export const TEMPLATES: Template[] = [
     envelopeVideo: "/intro2.mp4",
     backgroundImage: "/b1.jpg",
     gallery: ["/g1.jpg", "/g2.jpg", "/g3.jpg"],
+    languages: ["ar", "en"],
   },
   {
     id: "ward",

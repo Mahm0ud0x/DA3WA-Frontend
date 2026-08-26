@@ -75,7 +75,68 @@ const PRICES = [
     ],
   },
 ];
-
+const COPY = {
+  ar: {
+    welcomeEyebrow: "الوقت يمضي نحو فرحتنا",
+    welcomeTitle: "ننتظركم",
+    dateEyebrow: "التاريخ والموعد",
+    dateTitleLine1: "احفظوا",
+    dateTitleLine2: "الموعد.",
+    dateBody:
+      "سنكون بانتظاركم في أمسية تليق بهذه البداية. حضوركم هو أجمل ما نتمناه.",
+    scheduleEyebrow: "تفاصيل الأمسية",
+    scheduleTitle: "حين يبدأ الاحتفال",
+    galleryEyebrow: "معرض الصور",
+    galleryTitle: "لحظاتنا الجميلة",
+    locationEyebrow: "المكان",
+    openLocation: "فتح الموقع",
+    rsvpEyebrow: "ننتظركم بمحبة",
+    rsvpTitle: "تأكيد الحضور",
+    share: "مشاركة الدعوة",
+    shared: "تمت المشاركة",
+    copyLink: "نسخ الرابط",
+    copied: "تم نسخ الرابط ✓",
+    footerCta: "اصنعوا دعوتكم مع DA3WA",
+    rsvpNameLabel: "الاسم",
+    rsvpGuestsLabel: "عدد المرافقين",
+    rsvpYes: "سأحضر",
+    rsvpNo: "لن أتمكن من الحضور",
+    rsvpSubmit: "تأكيد الحضور",
+    rsvpSending: "جاري الإرسال...",
+    rsvpSuccess: "شكرًا لتأكيد حضوركم 🤍",
+    rsvpEditAgain: "تعديل الرد",
+  },
+  en: {
+    welcomeEyebrow: "Counting Down",
+    welcomeTitle: "We Can't Wait",
+    dateEyebrow: "Save the Date",
+    dateTitleLine1: "Mark Your",
+    dateTitleLine2: "Calendar.",
+    dateBody:
+      "We'd love for you to join us for an evening to remember. Your presence means everything to us.",
+    scheduleEyebrow: "Schedule of the Day",
+    scheduleTitle: "When the Celebration Begins",
+    galleryEyebrow: "Moments",
+    galleryTitle: "Glimpses of Us",
+    locationEyebrow: "Location",
+    openLocation: "Open in Maps",
+    rsvpEyebrow: "Be Our Guest",
+    rsvpTitle: "RSVP",
+    share: "Share Invitation",
+    shared: "Shared",
+    copyLink: "Copy Link",
+    copied: "Link Copied ✓",
+    footerCta: "Create Your Invitation with DA3WA",
+    rsvpNameLabel: "Full Name",
+    rsvpGuestsLabel: "Number of Guests",
+    rsvpYes: "Joyfully Accept",
+    rsvpNo: "Regretfully Decline",
+    rsvpSubmit: "Confirm Attendance",
+    rsvpSending: "Sending...",
+    rsvpSuccess: "Thank you for confirming 🤍",
+    rsvpEditAgain: "Edit Response",
+  },
+};
 const navItems = [
   { label: "التصاميم", target: "designs" },
   { label: "الباقات", target: "pricing" },
@@ -717,8 +778,8 @@ function Footer({ onPreview }: { onPreview: () => void }) {
   );
 }
 
-  function Countdown({
-    targetDate = DEFAULT_INVITATION_DETAILS.countdownDate,
+function Countdown({
+  targetDate = DEFAULT_INVITATION_DETAILS.countdownDate,
   dark = false,
 }: {
   targetDate?: Date;
@@ -827,9 +888,10 @@ function Timeline({ dark = false }: { dark?: boolean } = {}) {
   );
 }
 
-const SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw-ZRthtg8gFFYkD4kK-S_nmJUWS3lZAixPB3bff6xROXrBBNjFTYiJlBMcWsQG6nDJmg/exec";
+const SHEETS_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbw-ZRthtg8gFFYkD4kK-S_nmJUWS3lZAixPB3bff6xROXrBBNjFTYiJlBMcWsQG6nDJmg/exec";
 
-function RSVP() {
+function RSVP({ t }: { t: typeof COPY.ar }) {
   const [submitted, setSubmitted] = useState(false);
   const [attending, setAttending] = useState("yes");
   const [loading, setLoading] = useState(false);
@@ -842,7 +904,8 @@ function RSVP() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const clientSlug = window.location.pathname.replace(/^\/+/, "") || "unknown";
+    const clientSlug =
+      window.location.pathname.replace(/^\/+/, "") || "unknown";
 
     const payload = {
       name: formData.get("name"),
@@ -877,14 +940,14 @@ function RSVP() {
             <Check size={19} />
           </div>
           <p className="arabic-display text-[26px] text-[#151210]">
-            شكرًا لتأكيد حضوركم 🤍
+            {t.rsvpSuccess}
           </p>
           <button
             data-testid="button-rsvp-again"
             onClick={() => setSubmitted(false)}
             className="mt-6 text-[10px] text-[#a17e43] underline underline-offset-4"
           >
-            تعديل الرد
+            {t.rsvpEditAgain}
           </button>
         </div>
       ) : (
@@ -955,7 +1018,6 @@ function RSVP() {
     </div>
   );
 }
-
 
 function PhotoGalleryCarousel({ images }: { images: string[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -1086,6 +1148,10 @@ function Invitation({
   const [parallax, setParallax] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const details = template.details ?? DEFAULT_INVITATION_DETAILS;
+  const availableLanguages = template.languages ?? ["ar"];
+  const [language, setLanguage] = useState<"ar" | "en">(availableLanguages[0]);
+  const isBilingual = availableLanguages.length > 1;
+  const t = COPY[language];
   useEffect(() => {
     const onScroll = () => setParallax(Math.min(window.scrollY * 0.08, 36));
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -1182,10 +1248,19 @@ function Invitation({
         >
           <X size={18} />
         </button>
+        {isBilingual && (
+          <button
+            data-testid="button-toggle-language"
+            onClick={() => setLanguage((prev) => (prev === "ar" ? "en" : "ar"))}
+            className="absolute left-4 top-4 z-50 flex h-8 items-center justify-center rounded-full border border-[#f5efe3]/40 px-3 text-[10px] tracking-wide text-[#f5efe3]/80 transition hover:border-[#f5efe3] hover:text-[#f5efe3]"
+          >
+            {language === "ar" ? "English" : "عربي"}
+          </button>
+        )}
         <div
           ref={scrollRef}
           className="preview-scroll invitation-bg h-full overflow-y-auto"
-          dir="rtl"
+          dir={language === "ar" ? "rtl" : "ltr"}
           style={
             {
               "--invite-accent": template.accent,
@@ -1244,58 +1319,83 @@ function Invitation({
               <div className="petal" />
               <div className="petal" />
               <div className="absolute inset-x-0 top-[145px] z-10 mx-auto w-full max-w-[780px] px-6 text-center md:top-[170px]">
-                <h1 className="reveal-up delay-1 couple-names text-[48px] font-normal leading-[1.05] text-[#e5c989] md:text-[72px]">
-                  {details.firstName}{" "}
-                  <span className="serif text-[30px] text-[#f5efe3]/70 md:text-[42px]">
-                    &amp;
-                  </span>{" "}
-                  {details.secondName}
-                </h1>
-
-                {details.namesEn && (
-                  <p className="couple-names-en reveal-up delay-2 mt-3">
-                    {details.namesEn}
-                  </p>
+                {language === "ar" ? (
+                  <>
+                    <h1 className="reveal-up delay-1 couple-names text-[48px] font-normal leading-[1.05] text-[#e5c989] md:text-[72px]">
+                      {details.firstName}{" "}
+                      <span className="serif text-[30px] text-[#f5efe3]/70 md:text-[42px]">
+                        &amp;
+                      </span>{" "}
+                      {details.secondName}
+                    </h1>
+                    {details.namesEn && (
+                      <p className="couple-names-en reveal-up delay-2 mt-3 text-[26px] md:text-[34px]">
+                        {details.namesEn}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p className="reveal-up delay-1 text-[11px] font-semibold tracking-[.28em] text-[#f5efe3]/75">
+                      WE'RE GETTING MARRIED
+                    </p>
+                    <h1 className="reveal-up delay-2 couple-names-en mt-5 text-[58px] leading-[1.1] md:text-[92px]">
+                      {details.namesEn ??
+                        `${details.firstName} & ${details.secondName}`}
+                    </h1>
+                    <div className="reveal-up delay-3 mt-6 flex items-center justify-center gap-3">
+                      <span className="h-px w-12 bg-[#b9965b]/60" />
+                      <span className="h-1.5 w-1.5 rotate-45 bg-[#c8a96d]" />
+                      <span className="h-px w-12 bg-[#b9965b]/60" />
+                    </div>
+                  </>
                 )}
               </div>
 
               <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
-                <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.08em] text-[#f5efe3]/65">
-                  {details.dateLine}
+                <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.15em] text-[#f5efe3]/65">
+                  {language === "ar"
+                    ? details.dateLine
+                    : (details.dateLineEn ?? details.dateLine)}
                 </p>
 
-                <div className="reveal-up delay-3 mx-auto mt-12 max-w-[520px]">
-                  <Countdown targetDate={details.countdownDate} />
-                </div>
-
-                <div className="reveal-up delay-3 mx-auto mt-12 flex justify-center">
+                <div className="reveal-up delay-3 mx-auto mt-10 flex justify-center">
                   <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
-                    <span>نرجو مشاركتنا أولى لحظات حياتنا</span>
+                    <span>
+                      {language === "ar"
+                        ? "نرجو مشاركتنا أولى لحظات حياتنا"
+                        : "Join us as we celebrate our new beginning"}
+                    </span>
                     <Heart size={13} className="text-[#c8a96d]" />
                   </div>
                 </div>
               </div>
             </section>
           )}
-          <section className="invitation-section relative px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
+          <div className="relative">
             <div className="cover-fade-overlay" />
-            <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
-              <div className="eyebrow mb-8 text-[#a17e43]">
-                بسم الله الرحمن الرحيم
-              </div>
-              <div className="gold-rule mx-auto mb-10" />
-              <p className="arabic-display text-[24px] leading-[2.1] md:text-[32px]">
-                وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا
-                لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
-                ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
-              </p>
-              <div className="mx-auto mt-12 h-px w-12 bg-[#b9965b]" />
-              <p className="mt-10 text-[13px] leading-8 text-[#74685d]">
-                نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه المناسبة
-                المباركة.
-              </p>
-            </div>
-          </section>
+            {language === "ar" && (
+              <section className="invitation-section px-4 py-20 text-center text-[#151210] md:px-20 md:py-28">
+                <div className="glass-card relative z-10 mx-auto max-w-[760px] px-6 py-12 md:px-16 md:py-16">
+                  <div className="eyebrow mb-8 text-[#a17e43]">
+                    بسم الله الرحمن الرحيم
+                  </div>
+                  <div className="gold-rule mx-auto mb-10" />
+                  <p className="arabic-display text-[24px] leading-[2.1] md:text-[32px]">
+                    وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ
+                    أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم
+                    مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ
+                    يَتَفَكَّرُونَ
+                  </p>
+                  <div className="mx-auto mt-12 h-px w-12 bg-[#b9965b]" />
+                  <p className="mt-10 text-[13px] leading-8 text-[#74685d]">
+                    نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه
+                    المناسبة المباركة.
+                  </p>
+                </div>
+              </section>
+            )}
+          </div>
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-16 md:py-16">
               <div className="eyebrow mb-6 text-[#a17e43]">
