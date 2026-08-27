@@ -356,6 +356,29 @@ function Hero({ onPreview }: { onPreview: (template?: Template) => void }) {
   );
 }
 
+function PhoneShowcase() {
+  return (
+    <section className="bg-[#0f0d0b] px-5 py-20 md:px-10 md:py-28">
+      <div className="mx-auto max-w-[1200px] text-center">
+        <div className="reveal-up eyebrow mb-6 flex items-center justify-center gap-4 text-[#d8bc83]">
+          <span className="h-px w-10 bg-[#b9965b]" />
+          كل التفاصيل جاهزة
+          <span className="h-px w-10 bg-[#b9965b]" />
+        </div>
+        <h2 className="reveal-up arabic-display mb-14 text-[32px] font-normal text-[#f5efe3] md:text-[48px]">
+          دعوتك هتوصل بأحلى شكل
+        </h2>
+        <img
+          src="/hero-showcase.webp"
+          alt="معاينة دعوة الزفاف الرقمية على الموبايل"
+          className="reveal-up delay-2 mx-auto h-auto w-full max-w-[1000px]"
+          loading="lazy"
+        />
+      </div>
+    </section>
+  );
+}
+
 function SectionIntro({
   number,
   label,
@@ -1648,6 +1671,7 @@ function App() {
       <Hero
         onPreview={(template) => setSelectedTemplate(template ?? TEMPLATES[0])}
       />
+      <PhoneShowcase />
       <Designs onPreview={setSelectedTemplate} />
       <StorySection />
       <Process />
