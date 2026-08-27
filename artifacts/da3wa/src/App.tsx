@@ -21,11 +21,8 @@ import {
   Pause,
   Play,
   Share2,
-  Users,
-  UtensilsCrossed,
   Volume2,
   VolumeX,
-  Wine,
   X,
 } from "lucide-react";
 import { MusicPlayer } from "./MusicPlayer";
@@ -371,7 +368,7 @@ function PhoneShowcase() {
         <img
           src="/hero-showcase.webp"
           alt="معاينة دعوة الزفاف الرقمية على الموبايل"
-          className="reveal-up delay-2 -mx-5 h-auto w-[calc(100%+40px)] max-w-none md:mx-auto md:w-full md:max-w-[1000px]"
+          className="reveal-up delay-2 mx-auto h-auto w-full max-w-[1000px]"
           loading="lazy"
         />
       </div>
@@ -852,8 +849,10 @@ function Countdown({
           style={{ borderColor: "rgba(0,0,0,.08)" }}
         >
           <div
-            className="serif text-[32px] md:text-[44px]"
-            style={{ color: "var(--invite-accent, #c8a96d)" }}
+            className="serif text-[32px] font-bold md:text-[44px]"
+            style={{
+              color: dark ? "#151210" : "var(--invite-accent, #c8a96d)",
+            }}
           >
             {String(value).padStart(2, "0")}
           </div>
@@ -876,67 +875,127 @@ function Timeline({
   language?: "ar" | "en";
 } = {}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.18 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+    const onScroll = () => {
+      const node = ref.current;
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+      const start = vh * 0.85;
+      const end = -rect.height + vh * 0.25;
+      const raw = (start - rect.top) / (start - end || 1);
+      setProgress(Math.min(1, Math.max(0, raw)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
   const events =
     language === "ar"
       ? [
-          { time: "16:00", title: "استقبال الضيوف", Icon: Users },
-          { time: "17:00", title: "مراسم الزفاف", Icon: Heart },
-          { time: "19:00", title: "العشاء", Icon: UtensilsCrossed },
+          {
+            time: "16:00",
+            title: "استقبال الضيوف",
+            subtitle: "مشروبات ترحيبية",
+          },
+          {
+            time: "17:00",
+            title: "مراسم الزفاف",
+            subtitle: "تبادل العهود والخواتم",
+          },
+          {
+            time: "19:00",
+            title: "عشاء احتفالي",
+            subtitle: "بوفيه فاخر ومفاجآت",
+          },
+          {
+            time: "22:00",
+            title: "حفلة راقصة",
+            subtitle: "افتتاح الحفل والرقص حتى الفجر",
+          },
         ]
       : [
-          { time: "6:00 PM", title: "Guest Arrival", Icon: Users },
-          { time: "7:00 PM", title: "Wedding Ceremony", Icon: Heart },
-          { time: "9:00 PM", title: "Dinner", Icon: UtensilsCrossed },
+          {
+            time: "16:00",
+            title: "Guest Arrival",
+            subtitle: "Welcome drinks",
+          },
+          {
+            time: "17:00",
+            title: "Wedding Ceremony",
+            subtitle: "Exchange of vows and rings",
+          },
+          {
+            time: "19:00",
+            title: "Celebration Dinner",
+            subtitle: "Gourmet buffet & surprises",
+          },
+          {
+            time: "22:00",
+            title: "Dance Party",
+            subtitle: "Dance floor opens until dawn",
+          },
         ];
-  const textColor = dark ? "text-[#151210]" : "text-[#f5efe3]";
+  const cardTextColor = "text-[#151210]";
+  const cardSubColor = "text-[#6d6257]";
   return (
-    <div ref={ref} className="relative mx-auto max-w-[420px]">
+    <div ref={ref} dir="ltr" className="relative mx-auto max-w-[420px] py-2">
       <div
-        className={`absolute left-1/2 top-3 h-[calc(100%-24px)] w-px -translate-x-1/2 ${dark ? "bg-[#b9965b]/40" : "bg-[#b9965b]/30"}`}
+        className="absolute top-2 h-[calc(100%-16px)] w-px"
+        style={{ left: "calc(100% - 76px)", background: "rgba(185,150,91,0.45)" }}
       />
-      <div className="flex flex-col items-center gap-10">
-        {events.map(({ time, title, Icon }, index) => (
+      <div
+        className="absolute z-20 text-2xl leading-none transition-[top] duration-100 ease-linear"
+        style={{
+          left: "calc(100% - 76px)",
+          top: `${progress * 100}%`,
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        🌹
+      </div>
+      <div className="flex flex-col gap-8">
+        {events.map(({ time, title, subtitle }) => (
           <div
             key={time}
-            className={`timeline-item relative z-10 flex flex-col items-center text-center ${visible ? "visible" : ""}`}
-            style={{ transitionDelay: `${index * 120}ms` }}
+            className="grid items-center gap-3"
+            style={{ gridTemplateColumns: "1fr 24px 52px" }}
           >
             <div
-              className="flex h-12 w-12 items-center justify-center rounded-full border"
-              style={{
-                borderColor: "var(--invite-accent, #b9965b)",
-                background: dark ? "rgba(255,253,248,0.9)" : "#151210",
-              }}
+              dir={language === "ar" ? "rtl" : "ltr"}
+              className={`rounded-2xl border border-black/5 bg-[#faf7f0] px-5 py-4 text-right shadow-[0_6px_18px_rgba(21,18,16,0.08)] ${language === "en" ? "text-left" : ""}`}
             >
-              <Icon
-                size={18}
-                strokeWidth={1.5}
-                style={{ color: "var(--invite-accent, #c8a96d)" }}
-              />
+              <div className={`text-[14px] font-bold ${cardTextColor}`}>
+                {title}
+              </div>
+              <div className={`mt-1 text-[12px] ${cardSubColor}`}>
+                {subtitle}
+              </div>
+            </div>
+            <div className="relative z-10 flex items-center justify-center">
+              <span
+                className="flex h-4 w-4 items-center justify-center rounded-full border-2"
+                style={{
+                  borderColor: "var(--invite-accent, #b9965b)",
+                  background: dark ? "#faf7f0" : "#151210",
+                }}
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: "var(--invite-accent, #b9965b)" }}
+                />
+              </span>
             </div>
             <div
-              className="mono mt-4 text-[15px] font-medium"
-              style={{ color: "var(--invite-accent, #c8a96d)" }}
+              className="mono text-[15px] font-bold"
+              style={{ color: "var(--invite-accent, #a17e43)" }}
             >
               {time}
-            </div>
-            <div
-              className={`mt-1 text-[13px] tracking-[.04em] ${language === "en" ? "uppercase" : ""} ${textColor}`}
-            >
-              {title}
             </div>
           </div>
         ))}
@@ -1488,8 +1547,7 @@ function Invitation({
                   style={{ borderColor: "rgba(185,150,91,0.55)" }}
                 >
                   <span
-                    className="eyebrow text-[12px] font-semibold tracking-[.22em]"
-                    style={{ color: "var(--invite-accent, #a17e43)" }}
+                    className="eyebrow text-[13px] font-bold tracking-[.22em] text-[#151210]"
                   >
                     {language === "ar" ? "موعدنا" : "OUR DATE"}
                   </span>
@@ -1503,10 +1561,7 @@ function Invitation({
                       ? details.month
                       : (details.monthEn ?? details.month)}
                   </span>
-                  <span
-                    className="mono mt-2 text-[14px] font-semibold"
-                    style={{ color: "var(--invite-accent, #a17e43)" }}
-                  >
+                  <span className="mono mt-2 text-[15px] font-bold text-[#151210]">
                     {details.year}
                   </span>
                   <div
