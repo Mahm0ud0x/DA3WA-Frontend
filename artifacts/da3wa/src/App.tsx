@@ -371,7 +371,7 @@ function PhoneShowcase() {
         <img
           src="/hero-showcase.webp"
           alt="معاينة دعوة الزفاف الرقمية على الموبايل"
-          className="reveal-up delay-2 mx-auto h-auto w-full max-w-[1000px]"
+          className="reveal-up delay-2 -mx-5 h-auto w-[calc(100%+40px)] max-w-none md:mx-auto md:w-full md:max-w-[1000px]"
           loading="lazy"
         />
       </div>
