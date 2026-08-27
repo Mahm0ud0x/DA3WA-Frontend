@@ -26,6 +26,7 @@ import {
   X,
 } from "lucide-react";
 import { MusicPlayer } from "./MusicPlayer";
+import { FaWhatsapp } from "react-icons/fa";
 import { LightBurstTransition } from "./LightBurstTransition";
 import {
   TEMPLATES,
@@ -420,58 +421,38 @@ function TemplateCard({
   return (
     <article
       data-testid={`card-template-${template.id}`}
-      className="template-card group relative overflow-hidden rounded-[28px] bg-[#181614] shadow-[0_22px_55px_rgba(15,13,11,.14)]"
+      className="template-card group relative overflow-hidden rounded-[24px] bg-[#efe9dd] p-5 shadow-[0_18px_45px_rgba(15,13,11,.10)]"
     >
-      <div className="relative aspect-[.68/1] min-h-[430px] overflow-hidden">
-        {template.backgroundVideo ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={template.image}
-            className="h-full w-full object-cover"
-          >
-            <source src={template.backgroundVideo} type="video/mp4" />
-          </video>
-        ) : (
-          <img
-            src={template.image}
-            alt={`تصميم دعوة ${template.name}`}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        )}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,12,10,.12)_0%,rgba(14,12,10,.08)_40%,rgba(14,12,10,.92)_100%)]" />
-        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-          <span className="mono text-[9px] text-[#f8f1e4]/65">
-            {String(index + 1).padStart(2, "0")}
-          </span>
+      <img
+        src={template.image}
+        alt={`تصميم دعوة ${template.name}`}
+        className="w-full rounded-[16px] object-cover"
+        loading="lazy"
+      />
+
+      <div className="mt-6 text-center">
+        <div className="arabic-display text-[26px] leading-tight text-[#151210]">
+          {template.name}
         </div>
-        <div className="absolute inset-x-0 bottom-0 p-5 text-[#f8f1e4] md:p-6">
-          <div className="arabic-display text-[30px] leading-tight">
-            {template.name}
-          </div>
-          <p className="mt-2 line-clamp-2 text-[10px] leading-6 text-[#f8f1e4]/65">
-            {template.description}
-          </p>
-          <div className="mt-4 flex items-center gap-3">
-            <button
-              data-testid={`button-preview-${template.id}`}
-              onClick={() => onPreview(template)}
-              className="luxury-button flex-1 rounded-full bg-[#f8f4ec] px-4 py-3 text-[10px] font-bold text-[#17130d] transition hover:bg-[#e6d5ad]"
-            >
-              شاهد الدعوة
-            </button>
-            <button
-              data-testid={`button-order-template-${template.id}`}
-              onClick={() => orderOnWhatsApp(template.name)}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#c9a64a] text-[#17130d] transition hover:scale-105 hover:bg-[#e3c778]"
-              aria-label={`اطلب تصميم ${template.name} عبر واتساب`}
-            >
-              <MessageCircle size={18} strokeWidth={2.2} />
-            </button>
-          </div>
+        <p className="mt-2 line-clamp-2 text-[11px] leading-6 text-[#6d6257]">
+          {template.description}
+        </p>
+        <div className="mt-5 flex items-center gap-2">
+          <button
+            data-testid={`button-preview-${template.id}`}
+            onClick={() => onPreview(template)}
+            className="luxury-button flex-1 rounded-full bg-[#151210] px-4 py-3 text-[10px] font-bold tracking-wide text-[#f8f4ec] transition hover:bg-[#2a2420]"
+          >
+            شاهد الدعوة
+          </button>
+          <button
+            data-testid={`button-order-template-${template.id}`}
+            onClick={() => orderOnWhatsApp(template.name)}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white transition hover:scale-105 hover:bg-[#20bd5a]"
+            aria-label={`اطلب تصميم ${template.name} عبر واتساب`}
+          >
+            <FaWhatsapp size={18} />
+          </button>
         </div>
       </div>
     </article>
@@ -1387,7 +1368,7 @@ function Invitation({
           }
         >
           {template.coverStyle === "image" ? (
-            <section className="relative flex min-h-[740px] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
+            <section className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#efeee9] px-4 pb-10 pt-24 md:min-h-[900px] md:px-12 md:pb-14">
               <div className="relative z-10 w-full max-w-[576px] shadow-[0_18px_60px_rgba(10,8,7,0.22)]">
                 <img
                   src={template.image}
@@ -1407,7 +1388,7 @@ function Invitation({
               </div>
             </section>
           ) : (
-            <section className="relative flex min-h-[740px] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
+                <section className="relative flex min-h-[100dvh] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
               {template.backgroundVideo ? (
                 <video
                   autoPlay
