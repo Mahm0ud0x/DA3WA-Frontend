@@ -152,14 +152,12 @@ button { cursor: pointer; }
    template.backgroundImage وتتكرر عمودياً خلف كل الكروت الزجاجية */
 .invitation-bg {
   position: relative;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    var(--invite-bg-image, none);
-  background-repeat: repeat-y, repeat-y;
-  background-size: 100% auto, 100% auto;
-  background-position: top center, top center;
+  background-image: var(--invite-bg-image, none);
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: top center;
   background-color: #f4efe6;
-  background-attachment: local, local;
+  background-attachment: local;
 }
 
 .cover-fade-overlay {

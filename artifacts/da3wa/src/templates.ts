@@ -11,8 +11,10 @@ export type InvitationDetails = {
   locationImage?: string;
   mapsUrl?: string;
   month: string;
+  monthEn?: string;
   year: string;
   weekday: string;
+  weekdayEn?: string;
   time: string;
   venueTitle: [string, string];
   address: [string, string];
@@ -47,8 +49,10 @@ export const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
   dateLine: "الثلاثاء · 23 يوليو 2028 · 17:00",
   day: "23",
   month: "يوليو",
+  monthEn: "July",
   year: "2028",
   weekday: "الأحد",
+  weekdayEn: "Sunday",
   time: "17:00",
   venueTitle: ["قاعة", "النخبة"],
   address: ["طريق الملك فهد، حي العليا", "الرياض، المملكة العربية السعودية"],
@@ -63,8 +67,10 @@ export const QURAN_INVITATION_DETAILS: InvitationDetails = {
   dateLine: "الخميس · 12 ديسمبر 2028 · 16:00",
   day: "12",
   month: "ديسمبر",
+  monthEn: "December",
   year: "2028",
   weekday: "الخميس",
+  weekdayEn: "Thursday",
   time: "16:00",
   venueTitle: ["مسجد", "السداد"],
   address: ["قاعة المسجد الرئيسية", "المملكة العربية السعودية"],
