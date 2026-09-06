@@ -41,6 +41,7 @@ export type Template = {
   tier: "standard" | "premium";
   languages?: ("ar" | "en")[];
   gallery?: string[];
+  venueImage?: string;
 };
 
 export const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
@@ -54,8 +55,9 @@ export const DEFAULT_INVITATION_DETAILS: InvitationDetails = {
   weekday: "الأحد",
   weekdayEn: "Sunday",
   time: "17:00",
-  venueTitle: ["قاعة", "النخبة"],
-  address: ["طريق الملك فهد، حي العليا", "الرياض، المملكة العربية السعودية"],
+  venueTitle: ["قاعة", "لامور"],
+  locationImage: "/hcover1.png",
+  address: ["كورنيش النيل، الساحل", "القاهرة"],
   closing: "بكل الحب، سارة وأحمد",
   countdownDate: EVENT_DATE,
   namesEn: "Sara & Ahmed",
