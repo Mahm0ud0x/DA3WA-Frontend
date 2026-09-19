@@ -1234,9 +1234,11 @@ function EnvelopeCover({
 function Invitation({
   template,
   onClose,
+  fullScreen = false,
 }: {
   template: Template;
   onClose: () => void;
+  fullScreen?: boolean;
 }) {
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const [burstTriggered, setBurstTriggered] = useState(false);
@@ -1325,8 +1327,21 @@ function Invitation({
     window.setTimeout(() => setShared(false), 2200);
   };
   return (
-    <div className="modal-backdrop fixed inset-0 z-50 bg-[#090807]/90 p-0 backdrop-blur-sm md:p-5">
-      <div className="preview-dialog preview-shell relative h-full w-full overflow-hidden bg-[#151210] md:mx-auto md:max-w-[1160px]">
+    <div
+      className={
+        fullScreen
+          ? "fixed inset-0 z-50 bg-[#151210] p-0"
+          : "modal-backdrop fixed inset-0 z-50 bg-[#090807]/90 p-0 backdrop-blur-sm md:p-5"
+      }
+    >
+      <div
+        className={
+          fullScreen
+            ? "preview-shell relative h-full w-full overflow-hidden bg-[#151210]"
+            : "preview-dialog preview-shell relative h-full w-full overflow-hidden bg-[#151210] md:mx-auto md:max-w-[1160px]"
+        }
+        style={fullScreen ? { maxWidth: "none", borderRadius: 0 } : undefined}
+      >
         {!envelopeOpened && (
           <EnvelopeCover
             videoSrc={template.envelopeVideo ?? DEFAULT_ENVELOPE_VIDEO}
@@ -1679,41 +1694,60 @@ function Invitation({
   );
 }
 import { CLIENTS } from "./clients";
-function App() {
-  const clientSlug = window.location.pathname.replace(/^\/+/, "");
-  const clientTemplate = CLIENTS[clientSlug];
 
-  if (clientTemplate) {
+/* ───────────── صفحة الـ demo: كل تصميم في path لوحده (/demo/:id) ───────────── */
+function DemoPage({ id }: { id: string }) {
+  const template = TEMPLATES.find((t) => String(t.id) === id);
+
+  if (!template) {
     return (
-      <Invitation
-        template={clientTemplate}
-        onClose={() => (window.location.href = "/")}
-      />
+      <main
+        dir="rtl"
+        className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#151210] text-[#f5efe3]"
+      >
+        <p className="arabic-display text-[28px]">التصميم غير موجود</p>
+        <a href="/" className="text-[12px] text-[#d8bc83] underline">
+          الرجوع للموقع
+        </a>
+      </main>
     );
   }
 
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
-    null,
+  return (
+    <Invitation
+      template={template}
+      fullScreen
+      onClose={() => (window.location.href = "/")}
+    />
   );
+}
+
+/* ───────────── الموقع الرئيسي ───────────── */
+function MainSite() {
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // بدل ما نفتح modal فوق الموقع، بنروح لـ path جديد للـ demo
+  const openDemo = (template?: Template) => {
+    const target = template ?? TEMPLATES[0];
+    window.location.href = `/demo/${encodeURIComponent(String(target.id))}`;
+  };
+
   return (
     <main className="da3wa-app noise" dir="rtl">
-      <Header onPreview={() => setSelectedTemplate(TEMPLATES[0])} />
-      <Hero
-        onPreview={(template) => setSelectedTemplate(template ?? TEMPLATES[0])}
-      />
+      <Header onPreview={() => openDemo(TEMPLATES[0])} />
+      <Hero onPreview={(template) => openDemo(template)} />
       <PhoneShowcase />
-      <Designs onPreview={setSelectedTemplate} />
+      <Designs onPreview={openDemo} />
       <StorySection />
       <Process />
       <Pricing />
       <FAQ />
-      <Footer onPreview={() => setSelectedTemplate(TEMPLATES[0])} />
+      <Footer onPreview={() => openDemo(TEMPLATES[0])} />
       <div className="fixed bottom-4 left-4 z-20 flex flex-col gap-2 sm:hidden">
         <button
           data-testid="button-mobile-order"
@@ -1734,14 +1768,34 @@ function App() {
           <ChevronDown size={15} className="rotate-180" />
         </button>
       )}
-      {selectedTemplate && (
-        <Invitation
-          template={selectedTemplate}
-          onClose={() => setSelectedTemplate(null)}
-        />
-      )}
     </main>
   );
+}
+
+/* ───────────── الراوتر: بيحدد يعرض إيه حسب الرابط ───────────── */
+function App() {
+  const pathname = window.location.pathname;
+
+  // 1) /demo/:id → الدعوة لوحدها ماليه الشاشة
+  const demoMatch = pathname.match(/^\/demo\/([^/]+)\/?$/);
+  if (demoMatch) {
+    return <DemoPage id={decodeURIComponent(demoMatch[1])} />;
+  }
+
+  // 2) رابط عميل (زي /omar-hisham)
+  const clientSlug = pathname.replace(/^\/+/, "");
+  const clientTemplate = CLIENTS[clientSlug];
+  if (clientTemplate) {
+    return (
+      <Invitation
+        template={clientTemplate}
+        onClose={() => (window.location.href = "/")}
+      />
+    );
+  }
+
+  // 3) غير كده → الموقع الرئيسي
+  return <MainSite />;
 }
 
 export default App;
