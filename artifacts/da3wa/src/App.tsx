@@ -1256,6 +1256,12 @@ function PhotoGalleryCarousel({ images }: { images: string[] }) {
 const DEFAULT_ENVELOPE_VIDEO = "/intro1.mp4"; // ⬅️ غيّر ده لاسم ملف الفيديو بتاعك في public
 const DEFAULT_ENVELOPE_IMAGE = "/intro1.png"; // ⬅️ صورة الظرف المقفول
 
+// خطوط الأسماء: إنجليزي (Dancing Script) وعربي (Aref Ruqaa) — بيتحمّلوا تلقائياً من Google Fonts
+const SCRIPT_FONT = '"Dancing Script", "Great Vibes", cursive';
+const AR_NAMES_FONT = '"Aref Ruqaa", "Amiri", serif';
+const INVITE_FONTS_HREF =
+  "https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Dancing+Script:wght@500;600;700&display=swap";
+
 function EnvelopeCover({
   videoSrc,
   onNearEnd,
@@ -1312,10 +1318,12 @@ function Invitation({
   template,
   onClose,
   fullScreen = false,
+  defaultLanguage,
 }: {
   template: Template;
   onClose: () => void;
   fullScreen?: boolean;
+  defaultLanguage?: "ar" | "en";
 }) {
   const [envelopeOpened, setEnvelopeOpened] = useState(false);
   const [burstTriggered, setBurstTriggered] = useState(false);
@@ -1324,10 +1332,26 @@ function Invitation({
   const [parallax, setParallax] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const details = template.details ?? DEFAULT_INVITATION_DETAILS;
-  const availableLanguages = template.languages ?? ["ar"];
-  const [language, setLanguage] = useState<"ar" | "en">(availableLanguages[0]);
+  const baseLanguages = template.languages ?? ["ar"];
+  // لو في defaultLanguage ومش موجودة في لغات التصميم، بنضيفها (فيظهر زرار تبديل اللغة)
+  const availableLanguages: ("ar" | "en")[] =
+    defaultLanguage && !baseLanguages.includes(defaultLanguage)
+      ? [defaultLanguage, ...baseLanguages]
+      : baseLanguages;
+  const [language, setLanguage] = useState<"ar" | "en">(
+    defaultLanguage ?? availableLanguages[0],
+  );
   const isBilingual = availableLanguages.length > 1;
   const t = COPY[language];
+  useEffect(() => {
+    const id = "da3wa-invite-fonts";
+    if (document.getElementById(id)) return;
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = INVITE_FONTS_HREF;
+    document.head.appendChild(link);
+  }, []);
   useEffect(() => {
     const onScroll = () => setParallax(Math.min(window.scrollY * 0.08, 36));
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -1488,7 +1512,7 @@ function Invitation({
                   loop
                   playsInline
                   poster={template.image}
-                  className="absolute inset-0 h-full w-full object-cover opacity-55"
+                  className="absolute inset-0 h-full w-full object-cover"
                   style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
                 >
                   <source src={template.backgroundVideo} type="video/mp4" />
@@ -1497,56 +1521,77 @@ function Invitation({
                 <img
                   src={template.image}
                   alt={`دعوة ${template.name}`}
-                  className="absolute inset-0 h-full w-full object-cover opacity-55"
+                  className="absolute inset-0 h-full w-full object-cover"
                   style={{ transform: `scale(1.08) translateY(${parallax}px)` }}
                 />
               )}
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,7,6,.68),rgba(18,15,12,.18)_45%,rgba(12,10,8,.98))]" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,10,8,.4)_0%,rgba(12,10,8,.3)_45%,rgba(12,10,8,.98)_100%)]" />
               <div className="petal" />
               <div className="petal" />
               <div className="petal" />
               <div className="petal" />
               <div className="petal" />
-              <div className="absolute inset-x-0 top-[145px] z-10 mx-auto w-full max-w-[780px] px-6 text-center md:top-[170px]">
+              <div className="absolute inset-x-0 top-[105px] z-10 mx-auto w-full max-w-[900px] px-4 text-center text-[#fffaf0] [text-shadow:0_2px_18px_rgba(0,0,0,.55),0_1px_3px_rgba(0,0,0,.35)] md:top-[135px]">
+                <p className="reveal-up delay-1 text-[12px] font-semibold tracking-[.32em] md:text-[15px]">
+                  {language === "ar"
+                    ? "يسعدنا دعوتكم لحفل زفافنا"
+                    : "WE ARE GETTING MARRIED"}
+                </p>
                 {language === "ar" ? (
                   <>
-                    <h1 className="reveal-up delay-1 couple-names text-[48px] font-normal leading-[1.05] text-[#e5c989] md:text-[72px]">
-                      {details.firstName}{" "}
-                      <span className="serif text-[30px] text-[#f5efe3]/70 md:text-[42px]">
+                    <h1
+                      className="reveal-up delay-2 mt-5 text-[clamp(52px,15vw,78px)] font-bold leading-[1.25] md:text-[clamp(84px,9vw,132px)]"
+                      style={{ fontFamily: AR_NAMES_FONT }}
+                    >
+                      {details.firstName}
+                      <span
+                        className="mx-3 text-[.6em] font-semibold opacity-90"
+                        style={{ fontFamily: SCRIPT_FONT }}
+                      >
                         &amp;
-                      </span>{" "}
+                      </span>
                       {details.secondName}
                     </h1>
                     {details.namesEn && (
-                      <p className="couple-names-en reveal-up delay-2 mt-3 text-[26px] md:text-[34px]">
+                      <p
+                        className="reveal-up delay-2 mt-1 text-[clamp(28px,8vw,40px)] font-semibold opacity-95 md:text-[clamp(40px,4vw,56px)]"
+                        style={{ fontFamily: SCRIPT_FONT }}
+                      >
                         {details.namesEn}
                       </p>
                     )}
                   </>
                 ) : (
-                  <>
-                    <p className="reveal-up delay-1 text-[11px] font-semibold tracking-[.28em] text-[#f5efe3]/75">
-                      WE'RE GETTING MARRIED
-                    </p>
-                    <h1 className="reveal-up delay-2 couple-names-en mt-5 text-[58px] leading-[1.1] md:text-[92px]">
-                      {details.namesEn ??
-                        `${details.firstName} & ${details.secondName}`}
-                    </h1>
-                    <div className="reveal-up delay-3 mt-6 flex items-center justify-center gap-3">
-                      <span className="h-px w-12 bg-[#b9965b]/60" />
-                      <span className="h-1.5 w-1.5 rotate-45 bg-[#c8a96d]" />
-                      <span className="h-px w-12 bg-[#b9965b]/60" />
-                    </div>
-                  </>
+                  <h1
+                    className="reveal-up delay-2 mt-4 text-[clamp(48px,14vw,72px)] font-bold leading-[1.1] md:text-[clamp(88px,10vw,140px)]"
+                    style={{ fontFamily: SCRIPT_FONT }}
+                  >
+                    {details.namesEn ??
+                      `${details.firstName} & ${details.secondName}`}
+                  </h1>
                 )}
+                <div className="reveal-up delay-3 mt-6 flex items-center justify-center gap-4 md:mt-8 md:gap-7">
+                  <span className="text-[16px] font-medium tracking-[.25em] md:text-[24px]">
+                    {details.day}
+                  </span>
+                  <span
+                    className="text-[36px] font-semibold leading-none md:text-[60px]"
+                    style={{
+                      fontFamily:
+                        language === "ar" ? AR_NAMES_FONT : SCRIPT_FONT,
+                    }}
+                  >
+                    {language === "ar"
+                      ? details.month
+                      : (details.monthEn ?? details.month)}
+                  </span>
+                  <span className="text-[16px] font-medium tracking-[.25em] md:text-[24px]">
+                    {details.year}
+                  </span>
+                </div>
               </div>
 
-              <div className="relative z-10 mx-auto w-full max-w-[780px] text-center">
-                <p className="reveal-up delay-2 mt-7 text-[12px] tracking-[.15em] text-[#f5efe3]/65">
-                  {language === "ar"
-                    ? details.dateLine
-                    : (details.dateLineEn ?? details.dateLine)}
-                </p>
+              <div className="relative z-10 mx-auto w-full max-w-[780px] text-center [text-shadow:0_2px_12px_rgba(0,0,0,.5)]">
 
                 <div className="reveal-up delay-3 mx-auto mt-10 flex justify-center">
                   <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
@@ -1794,6 +1839,7 @@ function DemoPage({ id }: { id: string }) {
     <Invitation
       template={template}
       fullScreen
+      defaultLanguage="en"
       onClose={() => (window.location.href = "/")}
     />
   );
