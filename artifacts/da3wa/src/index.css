@@ -263,3 +263,14 @@ button { cursor: pointer; }
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+.invitation-bg .glass-card {
+  background: rgba(250, 247, 240, 0.78) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.1) !important;
+  backdrop-filter: blur(24px) saturate(1.1) !important;
+}
+
+.invitation-bg .eyebrow {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #6f5119 !important;
+}

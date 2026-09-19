@@ -838,13 +838,64 @@ function Countdown({
             {String(value).padStart(2, "0")}
           </div>
           <div
-            className={`mt-1 text-[10px] tracking-[.08em] ${language === "en" ? "uppercase" : ""} ${dark ? "text-[#151210]/70" : "text-[#f5efe3]/70"}`}
+            className={`mt-1 text-[12px] font-semibold tracking-[.08em] ${language === "en" ? "uppercase" : ""} ${dark ? "text-[#151210]/85" : "text-[#f5efe3]/70"}`}
           >
             {label}
           </div>
         </div>
       ))}
     </div>
+  );
+}
+
+const ROSE_SIZE = 36;
+
+function RoseIcon({ size = ROSE_SIZE }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      fill="none"
+      aria-hidden="true"
+      style={{ filter: "drop-shadow(0 3px 4px rgba(90,15,30,.35))" }}
+    >
+      <defs>
+        <radialGradient id="rose-g1" cx="50%" cy="50%" r="60%">
+          <stop offset="0" stopColor="#b3213f" />
+          <stop offset="1" stopColor="#7d0f2b" />
+        </radialGradient>
+        <radialGradient id="rose-g2" cx="50%" cy="50%" r="60%">
+          <stop offset="0" stopColor="#d63a58" />
+          <stop offset="1" stopColor="#a51a3b" />
+        </radialGradient>
+        <radialGradient id="rose-g3" cx="45%" cy="40%" r="65%">
+          <stop offset="0" stopColor="#f27d92" />
+          <stop offset="1" stopColor="#c9294a" />
+        </radialGradient>
+      </defs>
+      {/* الورق */}
+      <path d="M24 32 C15 31 8 36 5 43.5 C15 45.5 22 41.5 24 32Z" fill="#4d7d49" />
+      <path d="M24 32 C33 31 40 36 43 43.5 C33 45.5 26 41.5 24 32Z" fill="#3a6538" />
+      <path d="M24 32 C18 34 12 38 9 41.5" stroke="#8fb98a" strokeOpacity=".6" strokeWidth=".6" strokeLinecap="round" />
+      <path d="M24 32 C30 34 36 38 39 41.5" stroke="#8fb98a" strokeOpacity=".5" strokeWidth=".6" strokeLinecap="round" />
+      {/* بتلات الورده */}
+      <circle cx="24.00" cy="10.80" r="8.6" fill="url(#rose-g1)" stroke="#5a0a1f" strokeWidth="0.7" />
+      <circle cx="32.83" cy="15.90" r="8.6" fill="url(#rose-g1)" stroke="#5a0a1f" strokeWidth="0.7" />
+      <circle cx="32.83" cy="26.10" r="8.6" fill="url(#rose-g1)" stroke="#5a0a1f" strokeWidth="0.7" />
+      <circle cx="24.00" cy="31.20" r="8.6" fill="url(#rose-g1)" stroke="#5a0a1f" strokeWidth="0.7" />
+      <circle cx="15.17" cy="26.10" r="8.6" fill="url(#rose-g1)" stroke="#5a0a1f" strokeWidth="0.7" />
+      <circle cx="15.17" cy="15.90" r="8.6" fill="url(#rose-g1)" stroke="#5a0a1f" strokeWidth="0.7" />
+      <circle cx="27.20" cy="15.46" r="7.2" fill="url(#rose-g2)" stroke="#7a1030" strokeWidth="0.7" />
+      <circle cx="30.26" cy="22.33" r="7.2" fill="url(#rose-g2)" stroke="#7a1030" strokeWidth="0.7" />
+      <circle cx="24.67" cy="27.36" r="7.2" fill="url(#rose-g2)" stroke="#7a1030" strokeWidth="0.7" />
+      <circle cx="18.15" cy="23.60" r="7.2" fill="url(#rose-g2)" stroke="#7a1030" strokeWidth="0.7" />
+      <circle cx="19.72" cy="16.24" r="7.2" fill="url(#rose-g2)" stroke="#7a1030" strokeWidth="0.7" />
+      <circle cx="24" cy="21" r="6.2" fill="url(#rose-g3)" stroke="#8f1733" strokeWidth=".7" />
+      <path d="M24 16.6 C20.4 16.6 19.2 20.6 21 23.3 C22.6 25.6 26.8 25.2 27.6 22.2 C28.2 19.9 26.4 18.4 24.5 18.9 C22.8 19.3 22.9 21.6 24.4 21.7" stroke="#8f1733" strokeWidth="1" strokeLinecap="round" />
+      <path d="M14.5 15 C16.5 11.8 20 10.2 23 10.2" stroke="#ffc2cd" strokeOpacity=".55" strokeWidth="1.1" strokeLinecap="round" />
+      <path d="M30 12.4 C33 13 35 15 35.6 17.5" stroke="#ffc2cd" strokeOpacity=".4" strokeWidth="1" strokeLinecap="round" />
+    </svg>
   );
 }
 
@@ -856,9 +907,13 @@ function Timeline({
   language?: "ar" | "en";
 } = {}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const roseRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const onScroll = () => {
+    let target = 0; // مكان الورده المطلوب (0 → 1) حسب السكرول
+    let current = 0; // مكانها الحالي، بيقرّب من المطلوب بالتدريج
+    let raf = 0;
+
+    const updateTarget = () => {
       const node = ref.current;
       if (!node) return;
       const rect = node.getBoundingClientRect();
@@ -866,14 +921,33 @@ function Timeline({
       const start = vh * 0.85;
       const end = -rect.height + vh * 0.25;
       const raw = (start - rect.top) / (start - end || 1);
-      setProgress(Math.min(1, Math.max(0, raw)));
+      target = Math.min(1, Math.max(0, raw));
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+
+    const tick = () => {
+      const node = ref.current;
+      const rose = roseRef.current;
+      if (node && rose) {
+        const diff = target - current;
+        current += diff * 0.07; // كل ما الرقم أصغر الحركة أنعم وأبطأ
+        if (Math.abs(diff) < 0.0005) current = target;
+        const y = 8 + current * (node.clientHeight - 16) - ROSE_SIZE / 2;
+        const tilt = Math.max(-14, Math.min(14, diff * 260)); // ميلان خفيف مع الحركة
+        rose.style.transform = `translate3d(-50%, ${y}px, 0) rotate(${tilt}deg)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    updateTarget();
+    current = target;
+    // capture: true عشان نلقط السكرول بتاع أي عنصر جوه الصفحة (الدعوة بتسكرول جوه div مش الـ window)
+    window.addEventListener("scroll", updateTarget, { passive: true, capture: true });
+    window.addEventListener("resize", updateTarget);
+    raf = requestAnimationFrame(tick);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", updateTarget, { capture: true });
+      window.removeEventListener("resize", updateTarget);
     };
   }, []);
   const events =
@@ -923,38 +997,41 @@ function Timeline({
           },
         ];
   const cardTextColor = "text-[#151210]";
-  const cardSubColor = "text-[#6d6257]";
+  const cardSubColor = "text-[#3f352c]";
   return (
     <div ref={ref} dir="ltr" className="relative mx-auto max-w-[420px] py-2">
       <div
         className="absolute top-2 h-[calc(100%-16px)] w-px"
-        style={{ left: "calc(100% - 76px)", background: "rgba(185,150,91,0.45)" }}
+        style={{ left: "calc(100% - 84px)", background: "rgba(185,150,91,0.45)" }}
       />
       <div
-        className="absolute z-20 text-2xl leading-none transition-[top] duration-100 ease-linear"
+        ref={roseRef}
+        className="pointer-events-none absolute top-0 z-20"
         style={{
-          left: "calc(100% - 76px)",
-          top: `${progress * 100}%`,
-          transform: "translate(-50%, -50%)",
+          left: "calc(100% - 84px)",
+          width: ROSE_SIZE,
+          height: ROSE_SIZE,
+          transform: `translate3d(-50%, ${8 - ROSE_SIZE / 2}px, 0)`,
+          willChange: "transform",
         }}
       >
-        🌹
+        <RoseIcon />
       </div>
       <div className="flex flex-col gap-8">
         {events.map(({ time, title, subtitle }) => (
           <div
             key={time}
             className="grid items-center gap-3"
-            style={{ gridTemplateColumns: "1fr 24px 52px" }}
+            style={{ gridTemplateColumns: "1fr 24px 60px" }}
           >
             <div
               dir={language === "ar" ? "rtl" : "ltr"}
               className={`rounded-2xl border border-black/5 bg-[#faf7f0] px-5 py-4 text-right shadow-[0_6px_18px_rgba(21,18,16,0.08)] ${language === "en" ? "text-left" : ""}`}
             >
-              <div className={`text-[14px] font-bold ${cardTextColor}`}>
+              <div className={`text-[16px] font-bold ${cardTextColor}`}>
                 {title}
               </div>
-              <div className={`mt-1 text-[12px] ${cardSubColor}`}>
+              <div className={`mt-1 text-[14px] ${cardSubColor}`}>
                 {subtitle}
               </div>
             </div>
@@ -973,8 +1050,8 @@ function Timeline({
               </span>
             </div>
             <div
-              className="mono text-[15px] font-bold"
-              style={{ color: "var(--invite-accent, #a17e43)" }}
+              className="mono text-[17px] font-extrabold"
+              style={{ color: "color-mix(in srgb, var(--invite-accent, #a17e43) 55%, #000)" }}
             >
               {time}
             </div>
@@ -1033,7 +1110,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
           data-testid="status-rsvp-success"
           className="border border-[#b9965b]/40 bg-[#b9965b]/10 px-6 py-12 text-center"
         >
-          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center border border-[#b9965b] text-[#a17e43]">
+          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center border border-[#b9965b] text-[#6f5119]">
             <Check size={19} />
           </div>
           <p className="arabic-display text-[26px] text-[#151210]">
@@ -1042,7 +1119,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
           <button
             data-testid="button-rsvp-again"
             onClick={() => setSubmitted(false)}
-            className="mt-6 text-[10px] text-[#a17e43] underline underline-offset-4"
+            className="mt-6 text-[12px] text-[#6f5119] underline underline-offset-4"
           >
             {t.rsvpEditAgain}
           </button>
@@ -1054,7 +1131,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
           className="border-t border-[#151210]/10 pt-7"
         >
           <label className="mb-5 block">
-            <span className="mb-2 block text-[10px] text-[#151210]/55">
+            <span className="mb-2 block text-[12px] font-semibold text-[#151210]/80">
               {t.rsvpNameLabel}
             </span>
             <input
@@ -1066,7 +1143,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
             />
           </label>
           <label className="mb-6 block">
-            <span className="mb-2 block text-[10px] text-[#151210]/55">
+            <span className="mb-2 block text-[12px] font-semibold text-[#151210]/80">
               {t.rsvpGuestsLabel}
             </span>
             <select
@@ -1085,7 +1162,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
               type="button"
               data-testid="button-rsvp-yes"
               onClick={() => setAttending("yes")}
-              className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "yes" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#a17e43]" : "border-[#151210]/15 text-[#151210]/55"}`}
+              className={`flex-1 border px-3 py-3 text-[12px] font-semibold transition ${attending === "yes" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#6f5119]" : "border-[#151210]/15 text-[#151210]/80"}`}
             >
               {t.rsvpYes}
             </button>
@@ -1093,13 +1170,13 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
               type="button"
               data-testid="button-rsvp-no"
               onClick={() => setAttending("no")}
-              className={`flex-1 border px-3 py-3 text-[10px] transition ${attending === "no" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#a17e43]" : "border-[#151210]/15 text-[#151210]/55"}`}
+              className={`flex-1 border px-3 py-3 text-[12px] font-semibold transition ${attending === "no" ? "border-[#b9965b] bg-[#b9965b]/15 text-[#6f5119]" : "border-[#151210]/15 text-[#151210]/80"}`}
             >
               {t.rsvpNo}
             </button>
           </div>
           {error && (
-            <p className="mb-4 text-center text-[10px] text-red-600">
+            <p className="mb-4 text-center text-[12px] text-red-700">
               حصل خطأ، حاولوا تاني من فضلكم
             </p>
           )}
@@ -1505,13 +1582,13 @@ function Invitation({
                   يَتَفَكَّرُونَ
                 </p>
                 {language === "en" && (
-                  <p className="mt-4 text-[11px] italic tracking-[.05em] text-[#8a7c6c]">
+                  <p className="mt-4 text-[13px] italic tracking-[.05em] text-[#5a4e42]">
                     A verse on how spouses find peace, affection, and mercy in
                     one another — Qur'an, Surah Ar-Rum 30:21
                   </p>
                 )}
                 <div className="mx-auto mt-12 h-px w-12 bg-[#b9965b]" />
-                <p className="mt-10 text-[13px] leading-8 text-[#74685d]">
+                <p className="mt-10 text-[15px] leading-8 text-[#3f352c]">
                   {language === "ar"
                     ? "نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه المناسبة المباركة."
                     : "We are honored to invite you to share in our joy and celebrate this blessed occasion with us."}
@@ -1521,7 +1598,7 @@ function Invitation({
           </div>
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-16 md:py-16">
-              <div className="eyebrow mb-6 text-[#a17e43]">{t.welcomeEyebrow}</div>
+              <div className="eyebrow mb-6 text-[#6f5119]">{t.welcomeEyebrow}</div>
               <h2 className="arabic-display mb-12 text-[38px] font-normal md:text-[55px]">
                 {t.welcomeTitle}
               </h2>
@@ -1564,7 +1641,7 @@ function Invitation({
                     className="my-4 h-px w-8"
                     style={{ background: "var(--invite-accent, #b9965b)" }}
                   />
-                  <span className="text-[12px]">
+                  <span className="text-[14px] font-semibold">
                     {language === "ar"
                       ? details.weekday
                       : (details.weekdayEn ?? details.weekday)}{" "}
@@ -1573,13 +1650,13 @@ function Invitation({
                 </div>
               </div>
               <div>
-                <div className="eyebrow mb-5 text-[#a17e43]">{t.dateEyebrow}</div>
+                <div className="eyebrow mb-5 text-[#6f5119]">{t.dateEyebrow}</div>
                 <h2 className="arabic-display text-[42px] leading-tight md:text-[58px]">
                   {t.dateTitleLine1}
                   <br />
                   {t.dateTitleLine2}
                 </h2>
-                <p className="mt-6 text-[12px] leading-8 text-[#74685d]">
+                <p className="mt-6 text-[14px] leading-8 text-[#3f352c]">
                   {t.dateBody}
                 </p>
               </div>
@@ -1588,7 +1665,7 @@ function Invitation({
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[760px] px-6 py-12 md:px-14 md:py-14">
               <div className="mb-14 text-center">
-                <div className="eyebrow mb-5 text-[#a17e43]">{t.scheduleEyebrow}</div>
+                <div className="eyebrow mb-5 text-[#6f5119]">{t.scheduleEyebrow}</div>
                 <h2 className="arabic-display text-[43px] font-normal">
                   {t.scheduleTitle}
                 </h2>
@@ -1599,7 +1676,7 @@ function Invitation({
           {template.gallery && template.gallery.length > 0 && (
             <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
               <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-14 md:py-14">
-                <div className="eyebrow mb-3 text-[#a17e43]">{t.galleryEyebrow}</div>
+                <div className="eyebrow mb-3 text-[#6f5119]">{t.galleryEyebrow}</div>
                 <h2 className="arabic-display mb-10 text-[32px] font-normal md:text-[40px]">
                   {t.galleryTitle}
                 </h2>
@@ -1618,13 +1695,13 @@ function Invitation({
                 <div className="absolute inset-3 border border-white/50 rounded-[10px]" />
               </div>
               <div className="px-2 pb-4 md:px-4">
-                <div className="eyebrow mb-5 text-[#a17e43]">{t.locationEyebrow}</div>
+                <div className="eyebrow mb-5 text-[#6f5119]">{t.locationEyebrow}</div>
                 <h2 className="arabic-display text-[43px] leading-tight">
                   {details.venueTitle[0]}
                   <br />
                   {details.venueTitle[1]}
                 </h2>
-                <p className="mt-5 text-[12px] leading-8 text-[#74685d]">
+                <p className="mt-5 text-[14px] leading-8 text-[#3f352c]">
                   {details.address[0]}
                   <br />
                   {details.address[1]}
@@ -1634,7 +1711,7 @@ function Invitation({
                   href={details.mapsUrl ?? GOOGLE_MAPS_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#151210] px-5 py-3 text-[10px] text-[#151210]"
+                  className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#151210] px-5 py-3 text-[12px] font-semibold text-[#151210]"
                 >
                   <span>{t.openLocation}</span>
                   <MapPin size={14} />
@@ -1644,7 +1721,7 @@ function Invitation({
           </section>
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[650px] px-6 py-12 text-center md:px-14 md:py-14">
-              <div className="eyebrow mb-5 text-[#a17e43]">{t.rsvpEyebrow}</div>
+              <div className="eyebrow mb-5 text-[#6f5119]">{t.rsvpEyebrow}</div>
               <h2 className="arabic-display mb-12 text-[43px] font-normal md:text-[58px]">
                 {t.rsvpTitle}
               </h2>
@@ -1657,7 +1734,7 @@ function Invitation({
                 <button
                   data-testid="button-share-bottom"
                   onClick={share}
-                  className="flex items-center gap-2 text-[10px] text-[#6d6257] transition hover:text-[#a17e43]"
+                  className="flex items-center gap-2 text-[12px] font-semibold text-[#3f352c] transition hover:text-[#6f5119]"
                 >
                   <Share2 size={14} />{" "}
                   {shared ? t.shared : t.share}
@@ -1666,7 +1743,7 @@ function Invitation({
                 <button
                   data-testid="button-copy-bottom"
                   onClick={copyLink}
-                  className="flex items-center gap-2 text-[10px] text-[#6d6257] transition hover:text-[#a17e43]"
+                  className="flex items-center gap-2 text-[12px] font-semibold text-[#3f352c] transition hover:text-[#6f5119]"
                 >
                   <Copy size={14} /> {copied ? t.copied : t.copyLink}
                 </button>
