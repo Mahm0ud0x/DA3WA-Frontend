@@ -22,4 +22,4 @@ export const CLIENTS: Record<string, Template> = {
       mapsUrl: "https://maps.app.goo.gl/gZVywkKe48C7medt5"
     },
   },
-};
+}

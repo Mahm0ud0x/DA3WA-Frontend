@@ -1,13 +1,12 @@
 import {
   useEffect,
-  useMemo,
   useRef,
   useState,
   type ReactNode,
   type TouchEvent,
   type CSSProperties,
+  type FormEvent,
 } from "react";
-import quranInvitationCover from "@assets/image_1786905347310.png";
 import {
   ArrowUpLeft,
   Check,
@@ -17,23 +16,19 @@ import {
   Heart,
   MapPin,
   Menu,
-  MessageCircle,
-  Pause,
-  Play,
   Share2,
-  Volume2,
-  VolumeX,
   X,
 } from "lucide-react";
 import { MusicPlayer } from "./MusicPlayer";
 import { FaWhatsapp } from "react-icons/fa";
 import { LightBurstTransition } from "./LightBurstTransition";
+import { CLIENTS } from "./clients";
 import {
   TEMPLATES,
   DEFAULT_INVITATION_DETAILS,
   type Template,
-  type InvitationDetails,
 } from "./templates";
+
 const WHATSAPP_NUMBER = "966500000000";
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=Riyadh+Kingdom+Centre";
 const PRICES = [
@@ -411,11 +406,10 @@ function SectionIntro({
 
 function TemplateCard({
   template,
-  index,
   onPreview,
 }: {
   template: Template;
-  index: number;
+  index?: number;
   onPreview: (template: Template) => void;
 }) {
   return (
@@ -1071,7 +1065,7 @@ function RSVP({ t }: { t: typeof COPY.ar }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setError(false);
@@ -1375,12 +1369,6 @@ function Invitation({
     container.addEventListener("touchstart", stopAutoScroll, { passive: true });
     container.addEventListener("mousedown", stopAutoScroll, { passive: true });
 
-    console.log(
-      "auto-scroll effect mounted, container height:",
-      container.scrollHeight,
-      "client height:",
-      container.clientHeight,
-    );
     const startTimer = window.setTimeout(() => {
       const speed = 0.8;
       const step = () => {
@@ -1504,7 +1492,7 @@ function Invitation({
               </div>
             </section>
           ) : (
-                <section className="relative flex min-h-[100dvh] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
+            <section className="relative flex min-h-[100dvh] items-end overflow-hidden bg-[#151210] px-6 pb-20 pt-28 text-[#f5efe3] md:min-h-[900px] md:px-20 md:pb-28">
               {template.backgroundVideo ? (
                 <video
                   autoPlay
@@ -1592,7 +1580,6 @@ function Invitation({
               </div>
 
               <div className="relative z-10 mx-auto w-full max-w-[780px] text-center [text-shadow:0_2px_12px_rgba(0,0,0,.5)]">
-
                 <div className="reveal-up delay-3 mx-auto mt-10 flex justify-center">
                   <div className="flex items-center gap-3 text-[10px] text-[#f5efe3]/55">
                     <span>
@@ -1664,9 +1651,7 @@ function Invitation({
                   className="flex aspect-[.85/1] flex-col items-center justify-center border text-center"
                   style={{ borderColor: "rgba(185,150,91,0.55)" }}
                 >
-                  <span
-                    className="eyebrow text-[13px] font-bold tracking-[.22em] text-[#151210]"
-                  >
+                  <span className="eyebrow text-[13px] font-bold tracking-[.22em] text-[#151210]">
                     {language === "ar" ? "موعدنا" : "OUR DATE"}
                   </span>
                   <span className="serif mt-5 text-[88px] leading-none text-[#151210]">
@@ -1781,8 +1766,7 @@ function Invitation({
                   onClick={share}
                   className="flex items-center gap-2 text-[12px] font-semibold text-[#3f352c] transition hover:text-[#6f5119]"
                 >
-                  <Share2 size={14} />{" "}
-                  {shared ? t.shared : t.share}
+                  <Share2 size={14} /> {shared ? t.shared : t.share}
                 </button>
                 <span className="text-[#b9965b]">·</span>
                 <button
@@ -1815,7 +1799,6 @@ function Invitation({
     </div>
   );
 }
-import { CLIENTS } from "./clients";
 
 /* ───────────── صفحة الـ demo: كل تصميم في path لوحده (/demo/:id) ───────────── */
 function DemoPage({ id }: { id: string }) {
