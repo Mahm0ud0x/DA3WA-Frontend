@@ -22,4 +22,26 @@ export const CLIENTS: Record<string, Template> = {
       mapsUrl: "https://maps.app.goo.gl/gZVywkKe48C7medt5"
     },
   },
+
+  "mahmoud-reem": {
+    ...TEMPLATES.find(t => t.id === "layl")!,
+    gallery: [],
+    details: {
+      firstName: "محمود",
+      secondName: "ريم",
+      dateLine: "الجمعة · 27 نوفمبر 2026 · 18:00",
+      day: "27",
+      month: "نوفمبر",
+      year: "2026",
+      weekday: "الجمعة",
+      time: "18:00",
+      locationImage: "/mahmoud-reem.jpg",
+      closing: "بكل الحب، محمود ريم",
+      countdownDate: new Date("2026-11-27T18:00:00"),
+      namesEn: "Reem & Mahmoud",
+      mapsUrl: "https://maps.app.goo.gl/qfHzdmivspqUhNSU9?g_st=aw",
+      eventType: "engagement",
+      hideTimeline: true
+    },
+  },
 }

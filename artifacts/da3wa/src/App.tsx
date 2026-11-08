@@ -1337,6 +1337,7 @@ function Invitation({
   );
   const isBilingual = availableLanguages.length > 1;
   const t = COPY[language];
+  const isEngagement = details.eventType === "engagement";
   useEffect(() => {
     const id = "da3wa-invite-fonts";
     if (document.getElementById(id)) return;
@@ -1405,7 +1406,7 @@ function Invitation({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `دعوة زفاف ${details.firstName} و${details.secondName}`,
+          title: `دعوة ${isEngagement ? "خطوبة" : "زفاف"} ${details.firstName} و${details.secondName}`,
           url: window.location.href,
         });
       } catch {
@@ -1522,8 +1523,12 @@ function Invitation({
               <div className="absolute inset-x-0 top-[105px] z-10 mx-auto w-full max-w-[900px] px-4 text-center text-[#fffaf0] [text-shadow:0_2px_18px_rgba(0,0,0,.55),0_1px_3px_rgba(0,0,0,.35)] md:top-[135px]">
                 <p className="reveal-up delay-1 text-[12px] font-semibold tracking-[.32em] md:text-[15px]">
                   {language === "ar"
-                    ? "يسعدنا دعوتكم لحفل زفافنا"
-                    : "WE ARE GETTING MARRIED"}
+                    ? isEngagement
+                      ? "يسعدنا دعوتكم لحفل خطوبتنا"
+                      : "يسعدنا دعوتكم لحفل زفافنا"
+                    : isEngagement
+                      ? "WE ARE GETTING ENGAGED"
+                      : "WE ARE GETTING MARRIED"}
                 </p>
                 {language === "ar" ? (
                   <>
@@ -1622,7 +1627,9 @@ function Invitation({
                 <div className="mx-auto mt-12 h-px w-12 bg-[#b9965b]" />
                 <p className="mt-10 text-[15px] leading-8 text-[#3f352c]">
                   {language === "ar"
-                    ? "نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه المناسبة المباركة."
+                    ? isEngagement
+                      ? "نتشرف بدعوتكم لمشاركتنا فرحة خطوبتنا والاحتفال معنا بهذه المناسبة المباركة."
+                      : "نتشرف بدعوتكم لمشاركتنا فرحة زفافنا والاحتفال معنا بهذه المناسبة المباركة."
                     : "We are honored to invite you to share in our joy and celebrate this blessed occasion with us."}
                 </p>
               </div>
@@ -1692,6 +1699,7 @@ function Invitation({
               </div>
             </div>
           </section>
+          {!details.hideTimeline && (
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[760px] px-6 py-12 md:px-14 md:py-14">
               <div className="mb-14 text-center">
@@ -1703,6 +1711,7 @@ function Invitation({
               <Timeline dark language={language} />
             </div>
           </section>
+          )}
           {template.gallery && template.gallery.length > 0 && (
             <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
               <div className="glass-card mx-auto max-w-[760px] px-6 py-12 text-center md:px-14 md:py-14">
@@ -1714,41 +1723,45 @@ function Invitation({
               </div>
             </section>
           )}
-          <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
-            <div className="glass-card mx-auto grid max-w-[850px] items-center gap-12 p-4 md:grid-cols-[1.1fr_.9fr] md:p-6">
-              <div className="relative aspect-[1.1/1] overflow-hidden rounded-[18px]">
-                <img
-                  src={details.locationImage ?? template.image}
-                  alt="موقع المناسبة"
-                  className="h-full w-full object-cover grayscale-[.15]"
-                />
-                <div className="absolute inset-3 border border-white/50 rounded-[10px]" />
+            <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
+              <div className="glass-card mx-auto grid max-w-[850px] items-center gap-12 p-4 md:grid-cols-[1.1fr_.9fr] md:p-6">
+                <div className="relative aspect-[1.1/1] overflow-hidden rounded-[18px]">
+                  <img
+                    src={details.locationImage ?? template.image}
+                    alt="موقع المناسبة"
+                    className="h-full w-full object-cover grayscale-[.15]"
+                  />
+                  <div className="absolute inset-3 border border-white/50 rounded-[10px]" />
+                </div>
+                <div className="px-2 pb-4 md:px-4">
+                  <div className="eyebrow mb-5 text-[#6f5119]">{t.locationEyebrow}</div>
+                  {details.venueTitle && (
+                    <h2 className="arabic-display text-[43px] leading-tight">
+                      {details.venueTitle[0]}
+                      <br />
+                      {details.venueTitle[1]}
+                    </h2>
+                  )}
+                  {details.address && (
+                    <p className="mt-5 text-[14px] leading-8 text-[#3f352c]">
+                      {details.address[0]}
+                      <br />
+                      {details.address[1]}
+                    </p>
+                  )}
+                  <a
+                    data-testid="link-open-location"
+                    href={details.mapsUrl ?? GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#151210] px-5 py-3 text-[12px] font-semibold text-[#151210]"
+                  >
+                    <span>{t.openLocation}</span>
+                    <MapPin size={14} />
+                  </a>
+                </div>
               </div>
-              <div className="px-2 pb-4 md:px-4">
-                <div className="eyebrow mb-5 text-[#6f5119]">{t.locationEyebrow}</div>
-                <h2 className="arabic-display text-[43px] leading-tight">
-                  {details.venueTitle[0]}
-                  <br />
-                  {details.venueTitle[1]}
-                </h2>
-                <p className="mt-5 text-[14px] leading-8 text-[#3f352c]">
-                  {details.address[0]}
-                  <br />
-                  {details.address[1]}
-                </p>
-                <a
-                  data-testid="link-open-location"
-                  href={details.mapsUrl ?? GOOGLE_MAPS_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="luxury-button mt-8 inline-flex items-center gap-3 border border-[#151210] px-5 py-3 text-[12px] font-semibold text-[#151210]"
-                >
-                  <span>{t.openLocation}</span>
-                  <MapPin size={14} />
-                </a>
-              </div>
-            </div>
-          </section>
+            </section>
           <section className="px-4 py-20 text-[#151210] md:px-20 md:py-28">
             <div className="glass-card mx-auto max-w-[650px] px-6 py-12 text-center md:px-14 md:py-14">
               <div className="eyebrow mb-5 text-[#6f5119]">{t.rsvpEyebrow}</div>

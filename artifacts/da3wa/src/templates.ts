@@ -16,11 +16,14 @@ export type InvitationDetails = {
   weekday: string;
   weekdayEn?: string;
   time: string;
-  venueTitle: [string, string];
-  address: [string, string];
+  venueTitle?: [string, string];
+  address?: [string, string];
   closing: string;
   countdownDate: Date;
-  namesEn?: string;
+    namesEn?: string;
+    eventType?: "wedding" | "engagement";
+    hideTimeline?: boolean;
+  
 };
 
 export type Template = {
